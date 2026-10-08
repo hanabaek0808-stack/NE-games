@@ -1,0 +1,2943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e27">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>NE Games</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --accent: #6c5ce7; --accent2: #fd79a8; --accent3: #00cec9;
+    --text: #fff; --text-dim: #a0a4c0; --coin: #fdcb6e;
+    --bg1: #0a0e27; --bg2: #151b3d;
+  }
+  html, body { height: 100%; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg1); color: var(--text); user-select: none; -webkit-user-select: none;
+    overscroll-behavior: none; }
+
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(108,92,231,.35), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(253,121,168,.28), transparent 45%),
+      linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+    z-index: -2; animation: bgPulse 12s ease-in-out infinite alternate;
+  }
+  @keyframes bgPulse { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+
+  /* THEMES */
+  body.theme-default { --accent: #6c5ce7; --accent2: #fd79a8; --bg1: #0a0e27; --bg2: #151b3d; }
+  body.theme-default::before { background: radial-gradient(circle at 15% 20%, rgba(108,92,231,.35), transparent 45%), radial-gradient(circle at 85% 80%, rgba(253,121,168,.28), transparent 45%), linear-gradient(135deg, #0a0e27 0%, #151b3d 100%); }
+  body.theme-gold { --accent: #fdcb6e; --accent2: #e17055; --bg1: #1a0e27; --bg2: #2b1a0a; }
+  body.theme-gold::before { background: radial-gradient(circle at 15% 20%, rgba(253,203,110,.4), transparent 45%), radial-gradient(circle at 85% 80%, rgba(255,107,107,.3), transparent 45%), linear-gradient(135deg, #1a0e27 0%, #2b1a0a 100%); }
+  body.theme-ocean { --accent: #00b4db; --accent2: #0083b0; --bg1: #0a0e27; --bg2: #0a1f38; }
+  body.theme-ocean::before { background: radial-gradient(circle at 15% 20%, rgba(0,180,219,.4), transparent 45%), radial-gradient(circle at 85% 80%, rgba(0,131,176,.35), transparent 45%), linear-gradient(135deg, #0a0e27 0%, #0a1f38 100%); }
+  body.theme-pink { --accent: #f093fb; --accent2: #f5576c; --bg1: #1a0a1f; --bg2: #2b0a20; }
+  body.theme-pink::before { background: radial-gradient(circle at 15% 20%, rgba(240,147,251,.4), transparent 45%), radial-gradient(circle at 85% 80%, rgba(245,87,108,.3), transparent 45%), linear-gradient(135deg, #1a0a1f 0%, #2b0a20 100%); }
+  body.theme-forest { --accent: #43e97b; --accent2: #38f9d7; --bg1: #0a1a0e; --bg2: #0a2b15; }
+  body.theme-forest::before { background: radial-gradient(circle at 15% 20%, rgba(67,233,123,.4), transparent 45%), radial-gradient(circle at 85% 80%, rgba(56,249,215,.3), transparent 45%), linear-gradient(135deg, #0a1a0e 0%, #0a2b15 100%); }
+  body.theme-sunset { --accent: #ff6b6b; --accent2: #feca57; --bg1: #2b0a1a; --bg2: #4a1f0a; }
+  body.theme-sunset::before { background: radial-gradient(circle at 15% 20%, rgba(255,107,107,.4), transparent 45%), radial-gradient(circle at 85% 80%, rgba(254,202,87,.35), transparent 45%), linear-gradient(135deg, #2b0a1a 0%, #4a1f0a 100%); }
+  body.theme-galaxy { --accent: #a29bfe; --accent2: #6c5ce7; --bg1: #05060f; --bg2: #0a0e27; }
+  body.theme-galaxy::before { background: radial-gradient(circle at 15% 20%, rgba(162,155,254,.5), transparent 45%), radial-gradient(circle at 85% 80%, rgba(108,92,231,.4), transparent 45%), linear-gradient(135deg, #05060f 0%, #0a0e27 100%); }
+  body.theme-mint { --accent: #00cec9; --accent2: #55efc4; --bg1: #0a1f1e; --bg2: #0a2b2a; }
+  body.theme-mint::before { background: radial-gradient(circle at 15% 20%, rgba(0,206,201,.4), transparent 45%), radial-gradient(circle at 85% 80%, rgba(85,239,196,.3), transparent 45%), linear-gradient(135deg, #0a1f1e 0%, #0a2b2a 100%); }
+  body.theme-royal { --accent: #c471f5; --accent2: #fa71cd; --bg1: #1a0a2b; --bg2: #2b0a1a; }
+  body.theme-royal::before { background: radial-gradient(circle at 15% 20%, rgba(196,113,245,.4), transparent 45%), radial-gradient(circle at 85% 80%, rgba(250,113,205,.35), transparent 45%), linear-gradient(135deg, #1a0a2b 0%, #2b0a1a 100%); }
+  body.theme-mono { --accent: #dfe6e9; --accent2: #b2bec3; --bg1: #000; --bg2: #1a1a1a; }
+  body.theme-mono::before { background: radial-gradient(circle at 15% 20%, rgba(223,230,233,.2), transparent 45%), radial-gradient(circle at 85% 80%, rgba(178,190,195,.15), transparent 45%), linear-gradient(135deg, #000 0%, #1a1a1a 100%); }
+  /* Level themes */
+  body.theme-legendary { --accent: #ffd700; --accent2: #ffed4e; --bg1: #1a1400; --bg2: #2b1f00; }
+  body.theme-legendary::before { background: radial-gradient(circle at 15% 20%, rgba(255,215,0,.5), transparent 45%), radial-gradient(circle at 85% 80%, rgba(255,237,78,.35), transparent 45%), linear-gradient(135deg, #1a1400 0%, #2b1f00 100%); }
+
+  /* SEASONS */
+  body.season-halloween { --accent: #ff7800; --accent2: #9b59b6; }
+  body.season-christmas { --accent: #e74c3c; --accent2: #27ae60; }
+  body.season-spring { --accent: #ff9bc9; --accent2: #7dd456; }
+  body.season-summer { --accent: #ffd93d; --accent2: #4facfe; }
+
+  .orb { position: fixed; border-radius: 50%; filter: blur(60px); opacity: .4;
+    pointer-events: none; z-index: -1; animation: float 20s infinite ease-in-out; }
+  .orb:nth-child(1) { width: 220px; height: 220px; background: var(--accent); top: 5%; left: -60px; }
+  .orb:nth-child(2) { width: 260px; height: 260px; background: var(--accent2); bottom: 5%; right: -80px; animation-delay: -5s; }
+  .orb:nth-child(3) { width: 180px; height: 180px; background: var(--accent3); top: 45%; left: 40%; animation-delay: -10s; }
+  .orb:nth-child(4) { width: 150px; height: 150px; background: var(--coin); top: 70%; left: 10%; animation-delay: -15s; }
+  @keyframes float {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33% { transform: translate(60px,-40px) scale(1.15); }
+    66% { transform: translate(-40px,50px) scale(.9); }
+  }
+
+  .app { height: 100vh; height: 100dvh; display: flex; flex-direction: column; overflow: hidden;
+    max-width: 480px; margin: 0 auto; position: relative; }
+
+  /* HEADER */
+  .header { padding: 12px 14px 6px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .brand { display: flex; align-items: center; gap: 9px; }
+  .brand-logo {
+    width: 42px; height: 42px; border-radius: 13px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: grid; place-items: center; font-weight: 900; font-size: 15px; color: #fff;
+    box-shadow: 0 8px 24px rgba(108,92,231,.5);
+    animation: logoPulse 4s ease-in-out infinite;
+    position: relative;
+  }
+  .brand-logo .lvl-badge {
+    position: absolute; bottom: -4px; right: -4px;
+    min-width: 20px; height: 20px; padding: 0 5px;
+    border-radius: 10px; background: linear-gradient(135deg,#fdcb6e,#e17055);
+    font-size: 9.5px; font-weight: 900; color: #fff;
+    display: grid; place-items: center;
+    box-shadow: 0 2px 8px rgba(253,203,110,.6);
+    border: 2px solid var(--bg1);
+  }
+  @keyframes logoPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06) rotate(-3deg); } }
+  .brand-text h1 { font-size: 17px; font-weight: 800; letter-spacing: -.5px;
+    background: linear-gradient(90deg,#fff,#a29bfe);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .brand-text p { font-size: 9.5px; color: var(--text-dim); font-weight: 600; }
+  .brand-text p .rank-name { color: var(--accent); }
+
+  .hdr-right { display: flex; align-items: center; gap: 5px; }
+  .coin-pill {
+    display: flex; align-items: center; gap: 4px;
+    background: linear-gradient(135deg, rgba(253,203,110,.2), rgba(225,112,85,.2));
+    border: 1.5px solid rgba(253,203,110,.5); padding: 6px 10px; border-radius: 14px;
+    font-weight: 800; font-size: 12.5px;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .coin-pill.bump { transform: scale(1.2); }
+  .coin-pill .coin-icon { font-size: 14px; }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
+    display: grid; place-items: center; cursor: pointer; color: #fff; font-size: 14px;
+    transition: all .2s; position: relative;
+  }
+  .icon-btn:active { transform: scale(.9); }
+  .icon-btn .badge-dot {
+    position: absolute; top: 2px; right: 2px; width: 9px; height: 9px;
+    border-radius: 50%; background: #ff6b6b; box-shadow: 0 0 0 2px var(--bg1);
+    animation: dotPulse 1.5s infinite;
+  }
+  @keyframes dotPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+
+  /* LEVEL BAR */
+  .level-bar-wrap {
+    padding: 0 14px 8px; flex-shrink: 0;
+  }
+  .level-bar {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,.05); border-radius: 12px; padding: 8px 12px;
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .level-info { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .level-num {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: grid; place-items: center; font-weight: 900; font-size: 13px;
+    box-shadow: 0 4px 12px rgba(108,92,231,.4);
+    position: relative;
+  }
+  .level-num.rankup { animation: rankUpPulse 1.5s infinite; }
+  @keyframes rankUpPulse { 0%,100% { box-shadow: 0 4px 12px rgba(108,92,231,.4); } 50% { box-shadow: 0 4px 20px rgba(253,121,168,.8), 0 0 0 4px rgba(253,121,168,.3); } }
+  .level-text { display: flex; flex-direction: column; }
+  .level-name { font-size: 11px; font-weight: 800; letter-spacing: .3px; }
+  .level-xp { font-size: 9px; color: var(--text-dim); font-weight: 600; }
+  .level-progress {
+    flex: 1; height: 8px; background: rgba(255,255,255,.08);
+    border-radius: 8px; overflow: hidden; position: relative;
+  }
+  .level-progress-fill {
+    height: 100%; border-radius: 8px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    background-size: 200% 100%; animation: xpShine 3s linear infinite;
+    transition: width .8s cubic-bezier(.22,1,.36,1);
+    position: relative;
+  }
+  .level-progress-fill::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.4), transparent 50%);
+    border-radius: 8px;
+  }
+  @keyframes xpShine { 0% { background-position: 0 0; } 100% { background-position: 200% 0; } }
+  .level-progress-text {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-size: 8px; font-weight: 800; color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,.5);
+    pointer-events: none;
+  }
+
+  /* SEARCH */
+  .search-wrap { padding: 0 14px 8px; flex-shrink: 0; }
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: 9px 12px;
+  }
+  .search svg { width: 15px; height: 15px; stroke: var(--text-dim); flex-shrink: 0; }
+  .search input { flex: 1; background: none; border: none; outline: none; color: #fff; font-size: 12.5px; font-family: inherit; }
+  .search input::placeholder { color: var(--text-dim); }
+
+  /* CHIPS */
+  .chips { display: flex; gap: 5px; padding: 0 14px 10px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip {
+    padding: 6px 12px; border-radius: 14px; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08); color: var(--text-dim);
+    font-size: 10.5px; font-weight: 700; white-space: nowrap; cursor: pointer;
+    font-family: inherit; transition: all .3s;
+  }
+  .chip.active { background: linear-gradient(135deg,var(--accent),var(--accent2)); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(108,92,231,.4); }
+
+  /* CONTENT */
+  .content { flex: 1; overflow-y: auto; padding: 0 0 100px; scrollbar-width: none; }
+  .content::-webkit-scrollbar { display: none; }
+
+  .section-title { padding: 6px 14px 8px; display: flex; align-items: center; justify-content: space-between; }
+  .section-title h2 { font-size: 13.5px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .section-title span { font-size: 9.5px; color: var(--text-dim); font-weight: 600; }
+
+  .grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 9px; padding: 0 14px 16px; }
+
+  .game-card {
+    position: relative; border-radius: 15px; overflow: hidden; aspect-ratio: 1/1.1;
+    cursor: pointer; transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+    animation: cardIn .5s cubic-bezier(.22,1,.36,1) backwards;
+  }
+  .game-card:active { transform: scale(.94); }
+  .game-card.locked { opacity: .55; }
+  .game-card.locked::before {
+    content: '🔒'; position: absolute; inset: 0; z-index: 5;
+    display: grid; place-items: center; font-size: 40px;
+    background: rgba(0,0,0,.5); backdrop-filter: blur(2px);
+  }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .card-bg { position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; }
+  .card-overlay { position: absolute; inset: 0; background: linear-gradient(180deg,transparent 40%,rgba(0,0,0,.85)); }
+  .card-content { position: absolute; left: 0; right: 0; bottom: 0; padding: 9px; z-index: 2; }
+  .card-content h3 { font-size: 12px; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,.5); }
+  .card-content p { font-size: 9px; color: rgba(255,255,255,.7); margin-top: 1px; }
+  .card-badge {
+    position: absolute; top: 7px; right: 7px; padding: 3px 6px; border-radius: 6px;
+    font-size: 7.5px; font-weight: 800; z-index: 2; letter-spacing: .5px;
+  }
+  .card-badge.play { background: linear-gradient(135deg,#00cec9,#00b894); color: #fff; }
+  .card-badge.soon { background: rgba(255,255,255,.55); color: #0a0e27; }
+  .card-badge.hot { background: linear-gradient(135deg,#ff6b6b,#ee5a6f); color: #fff; animation: newPulse 1.5s infinite; }
+  .card-badge.farm { background: linear-gradient(135deg,#43e97b,#38f9d7); color: #fff; }
+  .card-badge.cook { background: linear-gradient(135deg,#f093fb,#f5576c); color: #fff; }
+  .card-badge.event { background: linear-gradient(135deg,#fdcb6e,#e17055); color: #fff; animation: newPulse 1.5s infinite; }
+  .card-badge.lock-badge { background: linear-gradient(135deg,#6c5ce7,#a29bfe); color: #fff; }
+  @keyframes newPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(255,107,107,.6); } 50% { box-shadow: 0 0 0 6px rgba(255,107,107,0); } }
+  .card-stars { position: absolute; bottom: 36px; left: 9px; z-index: 2; font-size: 9.5px;
+    text-shadow: 0 2px 6px rgba(0,0,0,.8); letter-spacing: -1px; }
+  .card-lock-info {
+    position: absolute; bottom: 42px; left: 9px; right: 9px; z-index: 3;
+    font-size: 8.5px; font-weight: 700; color: #fdcb6e; text-align: center;
+    text-shadow: 0 2px 4px rgba(0,0,0,.8);
+  }
+
+  .scroll-row { display: flex; gap: 8px; padding: 0 14px 14px; overflow-x: auto; scrollbar-width: none; }
+  .scroll-row::-webkit-scrollbar { display: none; }
+
+  .quest-card {
+    flex-shrink: 0; width: 180px; padding: 10px; border-radius: 13px;
+    background: linear-gradient(135deg, rgba(108,92,231,.15), rgba(253,121,168,.1));
+    border: 1px solid rgba(255,255,255,.1);
+  }
+  .quest-card.complete { background: linear-gradient(135deg, rgba(0,206,201,.2), rgba(0,184,148,.15)); border-color: rgba(0,206,201,.5); }
+  .quest-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+  .quest-emoji { font-size: 18px; }
+  .quest-info { flex: 1; }
+  .quest-name { font-size: 10px; font-weight: 700; }
+  .quest-reward { font-size: 9px; color: var(--coin); font-weight: 700; }
+  .quest-progress { height: 4px; background: rgba(0,0,0,.3); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+  .quest-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .5s; }
+
+  .banner {
+    margin: 0 14px 10px; padding: 11px 12px; border-radius: 15px;
+    display: flex; align-items: center; gap: 9px; cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .banner::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+    animation: shine 3s infinite; }
+  @keyframes shine { 0% { left: -100%; } 60%,100% { left: 200%; } }
+  .banner-daily { background: linear-gradient(135deg, #fdcb6e, #e17055); }
+  .banner-gift { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
+  .banner-event { background: linear-gradient(135deg, #ff6b6b, #ee5a6f); }
+  .banner-level { background: linear-gradient(135deg, #00b894, #00cec9); }
+  .banner .b-emoji { font-size: 26px; }
+  .banner .b-text { flex: 1; }
+  .banner h3 { font-size: 12.5px; font-weight: 800; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .banner p { font-size: 9.5px; color: rgba(255,255,255,.9); margin-top: 1px; font-weight: 600; }
+  .banner .b-btn { padding: 6px 11px; border-radius: 9px; background: rgba(255,255,255,.25);
+    color: #fff; font-weight: 800; font-size: 10.5px; border: none; font-family: inherit; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 62px;
+    background: rgba(10,14,39,.92); backdrop-filter: blur(30px);
+    border-top: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: space-around; z-index: 100;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 6px; background: none; border: none; color: var(--text-dim); font-family: inherit;
+    cursor: pointer; position: relative; transition: all .3s; }
+  .nav-item svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; transition: all .3s; }
+  .nav-item span { font-size: 8.5px; font-weight: 600; }
+  .nav-item.active { color: #fff; }
+  .nav-item.active svg { stroke: url(#navGrad); transform: translateY(-2px) scale(1.1); filter: drop-shadow(0 4px 12px rgba(108,92,231,.6)); }
+  .nav-item.active::after {
+    content: ''; position: absolute; top: 1px; width: 16px; height: 3px; border-radius: 3px;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    box-shadow: 0 2px 10px rgba(108,92,231,.8);
+  }
+
+  /* MODAL */
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,.85); backdrop-filter: blur(12px);
+    display: none; place-items: center; z-index: 300; padding: 20px; }
+  .modal.active { display: grid; }
+  .modal-box {
+    background: linear-gradient(135deg,#1a1f3d,#0f1428);
+    border: 1px solid rgba(255,255,255,.1); border-radius: 22px; padding: 22px;
+    text-align: center; max-width: 340px; width: 100%; max-height: 85vh; overflow-y: auto;
+    animation: modalIn .4s cubic-bezier(.34,1.56,.64,1); scrollbar-width: none;
+  }
+  .modal-box::-webkit-scrollbar { display: none; }
+  .modal-box.rankup-modal {
+    background: linear-gradient(135deg,#2b1f00,#1a1400);
+    border: 2px solid rgba(255,215,0,.5);
+    box-shadow: 0 0 40px rgba(255,215,0,.4);
+  }
+  @keyframes modalIn { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-emoji { font-size: 46px; margin-bottom: 8px; }
+  .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 5px; }
+  .modal-desc { font-size: 12px; color: var(--text-dim); margin-bottom: 14px; line-height: 1.5; }
+  .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; font-family: inherit;
+    box-shadow: 0 8px 20px rgba(108,92,231,.4); margin-top: 6px; }
+  .modal-btn:active { transform: scale(.97); }
+
+  /* RANK UP MODAL */
+  .rankup-badge {
+    width: 100px; height: 100px; margin: 0 auto 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#ffd700,#ffed4e);
+    display: grid; place-items: center; font-size: 48px;
+    box-shadow: 0 0 40px rgba(255,215,0,.6);
+    animation: rankupSpin 2s ease-in-out infinite;
+  }
+  @keyframes rankupSpin {
+    0%,100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.08) rotate(5deg); }
+  }
+  .rankup-title { font-size: 24px; font-weight: 900;
+    background: linear-gradient(90deg,#ffd700,#ffed4e);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    letter-spacing: 1px; margin-bottom: 4px; }
+  .rankup-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 14px; }
+  .rankup-rewards {
+    background: rgba(255,215,0,.1); border-radius: 12px; padding: 12px;
+    margin-bottom: 14px; text-align: left;
+  }
+  .rankup-rewards h4 { font-size: 11px; color: #fdcb6e; margin-bottom: 8px; text-align: center; letter-spacing: 1px; }
+  .rankup-reward-item { font-size: 11px; padding: 5px 0; color: #fff; display: flex; align-items: center; gap: 8px; }
+
+  /* FULLSCREEN GAME */
+  .game-screen { position: fixed; inset: 0; background: var(--bg1); z-index: 200;
+    display: none; flex-direction: column; max-width: 480px; margin: 0 auto; }
+  .game-screen.active { display: flex; animation: pageIn .35s cubic-bezier(.22,1,.36,1); }
+  @keyframes pageIn { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+  .game-header { padding: 10px 12px; display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0; background: rgba(0,0,0,.3); backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,.08); }
+  .game-back { width: 34px; height: 34px; border-radius: 10px; background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.1); display: grid; place-items: center;
+    color: #fff; cursor: pointer; flex-shrink: 0; }
+  .game-back svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+  .game-title { flex: 1; font-size: 13px; font-weight: 700; }
+  .game-stats { display: flex; gap: 4px; font-size: 10px; font-weight: 700; align-items: center; }
+  .game-stat { display: flex; align-items: center; gap: 3px; background: rgba(255,255,255,.08); padding: 4px 8px; border-radius: 8px; }
+  .game-body { flex: 1; position: relative; overflow: hidden; }
+
+  .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(100px);
+    background: rgba(30,36,70,.95); backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.1); padding: 10px 16px; border-radius: 11px;
+    font-size: 12px; font-weight: 600; opacity: 0; transition: all .4s cubic-bezier(.22,1,.36,1);
+    z-index: 1000; pointer-events: none; white-space: nowrap; max-width: 90%; }
+  .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  .fly-coin { position: fixed; z-index: 500; font-size: 20px; pointer-events: none; }
+  .burst-particle { position: fixed; z-index: 500; pointer-events: none; font-size: 15px; }
+  .confetti { position: fixed; z-index: 400; width: 7px; height: 11px; top: -20px; pointer-events: none; }
+  .snow { position: fixed; z-index: 1; font-size: 14px; pointer-events: none; animation: snowFall linear infinite; }
+  @keyframes snowFall { from { transform: translateY(-30px) rotate(0); } to { transform: translateY(110vh) rotate(360deg); } }
+
+  /* Games styles (reused from before) */
+  #subwayCanvas { display: block; width: 100%; height: 100%; touch-action: none; }
+  .coo-wrap { padding: 10px; display: flex; flex-direction: column; height: 100%; gap: 9px; }
+  .coo-order { background: linear-gradient(135deg, rgba(240,147,251,.15), rgba(245,87,108,.15));
+    border: 2px solid rgba(253,121,168,.4); border-radius: 13px; padding: 9px; text-align: center; }
+  .coo-order-label { font-size: 8.5px; color: var(--text-dim); font-weight: 700; letter-spacing: 1.5px; }
+  .coo-order-name { font-size: 16px; font-weight: 800; margin-top: 2px; background: linear-gradient(90deg,#fd79a8,#f093fb);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .coo-order-reward { font-size: 9.5px; color: var(--coin); font-weight: 700; margin-top: 2px; }
+  .coo-steps { display: flex; gap: 4px; justify-content: center; margin-top: 7px; flex-wrap: wrap; }
+  .coo-step { padding: 4px 8px; border-radius: 7px; background: rgba(255,255,255,.08);
+    font-size: 9px; font-weight: 600; transition: all .3s; }
+  .coo-step.done { background: linear-gradient(135deg,#00cec9,#00b894); text-decoration: line-through; opacity: .65; }
+  .coo-step.current { background: linear-gradient(135deg,#fd79a8,#f093fb); box-shadow: 0 0 14px rgba(253,121,168,.6); transform: scale(1.08); }
+  .coo-pan { flex: 1; min-height: 0; background: rgba(255,255,255,.04); border-radius: 13px;
+    border: 2px dashed rgba(255,255,255,.12); display: grid; place-items: center; }
+  .coo-pan-emoji { font-size: 62px; transition: all .4s cubic-bezier(.34,1.56,.64,1); }
+  .coo-pan-emoji.bounce { animation: panBounce .5s; }
+  @keyframes panBounce { 0%,100% { transform: scale(1); } 50% { transform: scale(1.3) rotate(8deg); } }
+  .coo-ingredients { display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; }
+  .coo-ing { aspect-ratio: 1; border-radius: 10px; background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1); display: grid; place-items: center;
+    font-size: 20px; cursor: pointer; transition: all .2s; }
+  .coo-ing:active { transform: scale(.9); }
+
+  .farm-wrap { padding: 9px; height: 100%; display: flex; flex-direction: column; gap: 7px; }
+  .farm-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+  .farm-stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 9px; padding: 6px; text-align: center; }
+  .farm-stat-label { font-size: 7.5px; color: var(--text-dim); font-weight: 700; letter-spacing: .5px; }
+  .farm-stat-val { font-size: 12.5px; font-weight: 800; margin-top: 2px; }
+  .farm-field { flex: 1; display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; min-height: 0; align-content: center; }
+  .farm-plot { aspect-ratio: 1; border-radius: 11px; background: linear-gradient(180deg,#6b4423,#4a2f18);
+    border: 2px solid rgba(255,255,255,.1); display: grid; place-items: center;
+    cursor: pointer; position: relative; overflow: hidden; transition: all .3s; }
+  .farm-plot:active { transform: scale(.95); }
+  .farm-plot.seedling { background: linear-gradient(180deg,#5a8a3a,#3d6125); }
+  .farm-plot.growing { background: linear-gradient(180deg,#6dbb42,#4a8a28); }
+  .farm-plot.ready { background: linear-gradient(180deg,#7dd456,#5aa832); animation: glowPlot 1s infinite; }
+  @keyframes glowPlot { 0%,100% { box-shadow: 0 0 0 0 rgba(125,212,86,.5); } 50% { box-shadow: 0 0 0 10px rgba(125,212,86,0); } }
+  .farm-plot-emoji { font-size: 26px; }
+  .farm-plot .progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(0,0,0,.3); }
+  .farm-plot .progress-bar { height: 100%; background: linear-gradient(90deg,#7dd456,#43e97b); transition: width .3s; }
+
+  .dragon-wrap { padding: 7px; height: 100%; display: flex; flex-direction: column; gap: 5px; }
+  .dragon-top { display: flex; justify-content: space-between; align-items: center; gap: 5px; }
+  .dragon-badge { display: flex; align-items: center; gap: 3px; background: rgba(255,255,255,.08); border-radius: 8px; padding: 5px 9px;
+    font-weight: 700; font-size: 10px; }
+  .dragon-board { display: grid; grid-template-columns: repeat(8,1fr); gap: 3px;
+    background: rgba(0,0,0,.3); padding: 5px; border-radius: 10px; margin: auto 0;
+    aspect-ratio: 1; width: 100%; max-height: 100%; }
+  .dragon-cell { aspect-ratio: 1; border-radius: 6px; display: grid; place-items: center;
+    font-size: clamp(12px,3vw,19px); cursor: pointer; transition: all .2s; }
+  .dragon-cell.selected { transform: scale(.75); box-shadow: 0 0 0 2px #fff inset; }
+  .dragon-cell.pop { animation: popCell .3s; }
+  @keyframes popCell { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(0); opacity: 0; } }
+
+  .cafe-wrap { padding: 8px; height: 100%; display: flex; flex-direction: column; gap: 6px; }
+  .cafe-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+  .cafe-stat { border-radius: 10px; padding: 6px; text-align: center; }
+  .cafe-stat.coins { background: linear-gradient(135deg,#fdcb6e,#e17055); }
+  .cafe-stat.level { background: linear-gradient(135deg,var(--accent),var(--accent2)); }
+  .cafe-stat.served { background: linear-gradient(135deg,#00b894,#00cec9); }
+  .cafe-stat-label { font-size: 7.5px; font-weight: 700; letter-spacing: .5px; opacity: .95; }
+  .cafe-stat-val { font-size: 14px; font-weight: 900; margin-top: 1px; }
+  .cafe-customers { flex: 1; background: rgba(255,255,255,.04); border-radius: 12px;
+    padding: 8px; display: flex; flex-direction: column; gap: 5px; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+  .cafe-customers::-webkit-scrollbar { display: none; }
+  .cafe-customer { display: flex; align-items: center; gap: 7px;
+    background: rgba(255,255,255,.06); border-radius: 9px; padding: 6px 9px;
+    animation: custIn .4s cubic-bezier(.34,1.56,.64,1); position: relative; overflow: hidden; flex-shrink: 0; }
+  @keyframes custIn { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+  .cafe-customer-emoji { font-size: 18px; flex-shrink: 0; }
+  .cafe-customer-info { flex: 1; min-width: 0; }
+  .cafe-customer-name { font-size: 10px; font-weight: 700; }
+  .cafe-customer-order { font-size: 8.5px; color: var(--text-dim); }
+  .cafe-customer-timer { position: absolute; bottom: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg,#00cec9,#00b894); transition: width .1s linear; }
+  .cafe-customer-timer.warn { background: linear-gradient(90deg,#ff6b6b,#ee5a6f); }
+  .cafe-serve-btn { padding: 5px 9px; border-radius: 7px; border: none;
+    background: linear-gradient(135deg,#00cec9,#00b894); color: #fff;
+    font-weight: 700; font-size: 9.5px; cursor: pointer; font-family: inherit; flex-shrink: 0; }
+  .cafe-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .cafe-item { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 9px; padding: 6px; text-align: center; cursor: pointer; transition: all .3s; }
+  .cafe-item:active { transform: scale(.95); }
+  .cafe-item-emoji { font-size: 16px; }
+  .cafe-item-name { font-size: 8.5px; font-weight: 700; margin-top: 2px; }
+  .cafe-item-cost { font-size: 7.5px; color: var(--coin); margin-top: 1px; font-weight: 700; }
+
+  .subpage { position: fixed; inset: 0; background: var(--bg1); z-index: 150;
+    display: none; flex-direction: column; max-width: 480px; margin: 0 auto; }
+  .subpage.open { display: flex; animation: pageSlide .35s cubic-bezier(.22,1,.36,1) forwards; }
+  @keyframes pageSlide { from { transform: translateX(100%); } to { transform: translateX(0); } }
+  .subpage-header { padding: 12px 14px; display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid rgba(255,255,255,.06); flex-shrink: 0; }
+  .subpage-header h2 { font-size: 15px; font-weight: 800; }
+  .subpage-body { flex: 1; overflow-y: auto; padding: 12px; scrollbar-width: none; }
+  .subpage-body::-webkit-scrollbar { display: none; }
+
+  .ach-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 8px; }
+  .ach-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px; padding: 10px; text-align: center; }
+  .ach-card.unlocked { background: linear-gradient(135deg, rgba(0,206,201,.15), rgba(108,92,231,.1)); border-color: rgba(0,206,201,.4); }
+  .ach-emoji { font-size: 26px; margin-bottom: 5px; filter: grayscale(1) opacity(.4); }
+  .ach-card.unlocked .ach-emoji { filter: none; }
+  .ach-name { font-size: 10px; font-weight: 700; }
+  .ach-desc { font-size: 8.5px; color: var(--text-dim); margin-top: 3px; line-height: 1.3; }
+  .ach-reward { font-size: 9px; color: var(--coin); font-weight: 800; margin-top: 4px; }
+  .claim-btn { margin-top: 5px; padding: 4px 10px; border-radius: 7px; border: none;
+    background: linear-gradient(135deg,#00cec9,#00b894); color: #fff; font-weight: 800;
+    font-size: 8.5px; cursor: pointer; font-family: inherit; animation: claimPulse 1.5s infinite; }
+  @keyframes claimPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(0,206,201,.6); } 50% { box-shadow: 0 0 0 6px rgba(0,206,201,0); } }
+
+  .stat-row { display: flex; align-items: center; gap: 8px; padding: 9px;
+    background: rgba(255,255,255,.05); border-radius: 10px; margin-bottom: 6px; }
+  .stat-row-emoji { font-size: 20px; }
+  .stat-row-info { flex: 1; }
+  .stat-row-name { font-size: 11px; font-weight: 700; }
+  .stat-row-val { font-size: 9.5px; color: var(--text-dim); }
+
+  .lb-row { display: flex; align-items: center; gap: 9px; padding: 9px;
+    background: rgba(255,255,255,.05); border-radius: 11px; margin-bottom: 6px; }
+  .lb-row.you { background: linear-gradient(135deg, rgba(108,92,231,.25), rgba(253,121,168,.15)); border: 1px solid rgba(108,92,231,.4); }
+  .lb-rank { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.1);
+    display: grid; place-items: center; font-size: 11px; font-weight: 800; flex-shrink: 0; }
+  .lb-rank.top1 { background: linear-gradient(135deg,#fdcb6e,#e17055); }
+  .lb-rank.top2 { background: linear-gradient(135deg,#b2bec3,#636e72); }
+  .lb-rank.top3 { background: linear-gradient(135deg,#cd7f32,#8b4513); }
+  .lb-avatar { font-size: 20px; }
+  .lb-info { flex: 1; }
+  .lb-name { font-size: 11px; font-weight: 700; }
+  .lb-score { font-size: 9.5px; color: var(--coin); font-weight: 700; }
+
+  .theme-card { border-radius: 13px; padding: 9px; text-align: center; cursor: pointer;
+    border: 2px solid rgba(255,255,255,.1); transition: all .3s; position: relative; overflow: hidden; }
+  .theme-card.active { border-color: #fff; box-shadow: 0 0 20px rgba(255,255,255,.3); }
+  .theme-card.locked { opacity: .5; }
+  .theme-preview { width: 100%; height: 40px; border-radius: 8px; margin-bottom: 5px; }
+  .theme-name { font-size: 10px; font-weight: 700; }
+  .theme-price { font-size: 8.5px; color: var(--coin); font-weight: 700; margin-top: 2px; }
+  .theme-price.lock { color: var(--text-dim); }
+
+  .setting-row { display: flex; align-items: center; justify-content: space-between;
+    padding: 11px; background: rgba(255,255,255,.05); border-radius: 11px; margin-bottom: 7px; }
+  .setting-label { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 700; }
+  .setting-label span:first-child { font-size: 18px; }
+  .toggle { width: 42px; height: 24px; border-radius: 12px; background: rgba(255,255,255,.15);
+    position: relative; cursor: pointer; transition: all .3s; }
+  .toggle.on { background: linear-gradient(135deg,#00cec9,#00b894); }
+  .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+    border-radius: 50%; background: #fff; transition: all .3s; }
+  .toggle.on::after { left: 21px; }
+
+  /* Multiplayer RPS */
+  .mp-status { text-align: center; padding: 12px; background: rgba(255,255,255,.05); border-radius: 12px; margin-bottom: 10px; font-size: 12px; }
+  .mp-players { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .mp-player { background: rgba(255,255,255,.05); border-radius: 12px; padding: 12px; text-align: center; border: 2px solid rgba(255,255,255,.1); }
+  .mp-player.win { border-color: #00b894; background: rgba(0,184,148,.15); }
+  .mp-player.lose { opacity: .5; }
+  .mp-hand { font-size: 42px; margin: 6px 0; }
+
+  @media (min-width: 640px) { .grid { grid-template-columns: repeat(3,1fr); } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6c5ce7"/><stop offset="100%" stop-color="#fd79a8"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="orb"></div><div class="orb"></div><div class="orb"></div><div class="orb"></div>
+
+<div class="app">
+  <header class="header">
+    <div class="brand">
+      <div class="brand-logo">NE<span class="lvl-badge" id="lvlBadge">1</span></div>
+      <div class="brand-text">
+        <h1>NE Games</h1>
+        <p>Rank: <span class="rank-name" id="rankName">Novice</span></p>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="coin-pill" id="coinPill">
+        <span class="coin-icon">🪙</span>
+        <span id="coinAmount">100</span>
+      </div>
+      <div class="icon-btn" onclick="openAchievements()">🏆<span class="badge-dot" id="achDot" style="display:none"></span></div>
+      <div class="icon-btn" onclick="openSettings()">⚙️</div>
+    </div>
+  </header>
+
+  <div class="level-bar-wrap">
+    <div class="level-bar" id="levelBar">
+      <div class="level-info">
+        <div class="level-num" id="lvlNum">1</div>
+        <div class="level-text">
+          <div class="level-name" id="lvlName">Novice</div>
+          <div class="level-xp" id="lvlXpText">0 / 100 XP</div>
+        </div>
+      </div>
+      <div class="level-progress">
+        <div class="level-progress-fill" id="lvlFill"></div>
+        <div class="level-progress-text" id="lvlPct">0%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="searchBox" placeholder="Search games..." oninput="handleSearch(this.value)">
+    </div>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <main class="content" id="homeContent">
+    <div id="eventSlot"></div>
+    <div id="levelSlot"></div>
+    <div id="dailySlot"></div>
+    <div id="giftSlot"></div>
+
+    <div class="section-title">
+      <h2>🌱 Farming & Cooking</h2>
+      <span id="farmCookCount">0 games</span>
+    </div>
+    <div class="grid" id="farmCookGrid"></div>
+
+    <div class="section-title">
+      <h2 id="featuredTitle">⭐ All Games</h2>
+      <span id="playableCount">0 games</span>
+    </div>
+    <div class="grid" id="featuredGrid"></div>
+
+    <div class="section-title">
+      <h2>🎯 Daily Quests</h2>
+      <span id="questsDone"></span>
+    </div>
+    <div class="scroll-row" id="questsRow"></div>
+
+    <div class="section-title">
+      <h2>🏆 Leaderboard</h2>
+      <span onclick="openLeaderboard()" style="color:var(--accent3);cursor:pointer">View All →</span>
+    </div>
+    <div id="lbPreview" style="padding: 0 14px 14px"></div>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchTab(this,'home')">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span>
+    </button>
+    <button class="nav-item" onclick="switchTab(this,'levels')">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M12 2l3 7h7l-5.5 4.5 2 7L12 16l-6.5 4.5 2-7L2 9h7z"/></svg><span>Levels</span>
+    </button>
+    <button class="nav-item" onclick="switchTab(this,'leaderboard')">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span>Ranks</span>
+    </button>
+    <button class="nav-item" onclick="switchTab(this,'shop')">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg><span>Shop</span>
+    </button>
+    <button class="nav-item" onclick="switchTab(this,'stats')">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Stats</span>
+    </button>
+  </nav>
+</div>
+
+<div class="game-screen" id="gameScreen">
+  <div class="game-header">
+    <button class="game-back" onclick="closeGame()">
+      <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <div class="game-title" id="gameTitle">Game</div>
+    <div class="game-stats" id="gameStats"></div>
+  </div>
+  <div class="game-body" id="gameBody"></div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-emoji" id="modalEmoji">🎉</div>
+    <div class="modal-title" id="modalTitle">Title</div>
+    <div class="modal-desc" id="modalDesc">Desc</div>
+    <div id="modalExtra"></div>
+    <button class="modal-btn" id="modalBtn">OK</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   STORAGE & SETTINGS
+   ══════════════════════════════════════════════════════════ */
+const Storage = {
+  get(k, def) { try { const v = localStorage.getItem('ne_' + k); return v ? JSON.parse(v) : def; } catch { return def; } },
+  set(k, v) { try { localStorage.setItem('ne_' + k, JSON.stringify(v)); } catch {} },
+};
+
+const Settings = {
+  get sound() { return Storage.get('sound', true); },
+  set sound(v) { Storage.set('sound', v); Sound.enabled = v; },
+  get haptics() { return Storage.get('haptics', true); },
+  set haptics(v) { Storage.set('haptics', v); },
+  get animations() { return Storage.get('animations', true); },
+  set animations(v) { Storage.set('animations', v); },
+  vibrate(ms) { if (this.haptics && navigator.vibrate) navigator.vibrate(ms); }
+};
+
+const Sound = {
+  ctx: null, enabled: true,
+  init() { if (!this.ctx) try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} },
+  tone(freq, dur = 0.1, type = 'sine', vol = 0.1) {
+    if (!this.enabled) return;
+    this.init(); if (!this.ctx) return;
+    const o = this.ctx.createOscillator(), g = this.ctx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, this.ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + dur);
+    o.connect(g); g.connect(this.ctx.destination);
+    o.start(); o.stop(this.ctx.currentTime + dur);
+  },
+  coin() { this.tone(1200, 0.08, 'square', 0.08); setTimeout(() => this.tone(1600, 0.1, 'square', 0.06), 40); },
+  click() { this.tone(600, 0.05, 'sine', 0.05); },
+  correct() { this.tone(700, 0.1, 'sine', 0.08); setTimeout(() => this.tone(1000, 0.15, 'sine', 0.08), 80); },
+  wrong() { this.tone(300, 0.15, 'sawtooth', 0.08); setTimeout(() => this.tone(200, 0.2, 'sawtooth', 0.08), 80); },
+  win() { [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => this.tone(f, 0.15, 'triangle', 0.08), i * 80)); },
+  lose() { [400, 300, 200].forEach((f, i) => setTimeout(() => this.tone(f, 0.2, 'sawtooth', 0.07), i * 100)); },
+  pop() { this.tone(800, 0.06, 'sine', 0.06); },
+  jump() { this.tone(400, 0.1, 'sine', 0.06); setTimeout(() => this.tone(700, 0.08, 'sine', 0.06), 30); },
+  unlock() { [600, 800, 1000, 1200].forEach((f, i) => setTimeout(() => this.tone(f, 0.12, 'sine', 0.09), i * 60)); },
+  chop() { this.tone(200, 0.05, 'square', 0.1); },
+  sizzle() { for (let i = 0; i < 3; i++) setTimeout(() => this.tone(400 + Math.random()*200, 0.05, 'sawtooth', 0.03), i * 30); },
+  plant() { this.tone(500, 0.08, 'sine', 0.06); setTimeout(() => this.tone(800, 0.1, 'sine', 0.06), 50); },
+  rankup() { [523, 659, 784, 1046, 1318].forEach((f, i) => setTimeout(() => this.tone(f, 0.2, 'triangle', 0.1), i * 100)); }
+};
+
+/* ══════════════════════════════════════════════════════════
+   LEVEL SYSTEM — 50 ranks with 5 tiers
+   ══════════════════════════════════════════════════════════ */
+const RANKS = [
+  { lvl: 1,  name: 'Novice',       tier: 'bronze' },
+  { lvl: 2,  name: 'Apprentice',   tier: 'bronze' },
+  { lvl: 3,  name: 'Learner',      tier: 'bronze' },
+  { lvl: 4,  name: 'Player',       tier: 'bronze' },
+  { lvl: 5,  name: 'Bronze I',     tier: 'bronze', milestone: true },
+  { lvl: 6,  name: 'Bronze II',    tier: 'bronze' },
+  { lvl: 7,  name: 'Bronze III',   tier: 'bronze' },
+  { lvl: 8,  name: 'Silver I',     tier: 'silver' },
+  { lvl: 9,  name: 'Silver II',    tier: 'silver' },
+  { lvl: 10, name: 'Silver III',   tier: 'silver', milestone: true },
+  { lvl: 11, name: 'Silver IV',    tier: 'silver' },
+  { lvl: 12, name: 'Gold I',       tier: 'gold' },
+  { lvl: 13, name: 'Gold II',      tier: 'gold' },
+  { lvl: 14, name: 'Gold III',     tier: 'gold' },
+  { lvl: 15, name: 'Gold IV',      tier: 'gold', milestone: true },
+  { lvl: 16, name: 'Platinum I',   tier: 'platinum' },
+  { lvl: 17, name: 'Platinum II',  tier: 'platinum' },
+  { lvl: 18, name: 'Platinum III', tier: 'platinum' },
+  { lvl: 19, name: 'Platinum IV',  tier: 'platinum' },
+  { lvl: 20, name: 'Diamond I',    tier: 'diamond', milestone: true },
+  { lvl: 21, name: 'Diamond II',   tier: 'diamond' },
+  { lvl: 22, name: 'Diamond III',  tier: 'diamond' },
+  { lvl: 23, name: 'Diamond IV',   tier: 'diamond' },
+  { lvl: 24, name: 'Diamond V',    tier: 'diamond' },
+  { lvl: 25, name: 'Master I',     tier: 'master', milestone: true },
+  { lvl: 26, name: 'Master II',    tier: 'master' },
+  { lvl: 27, name: 'Master III',   tier: 'master' },
+  { lvl: 28, name: 'Master IV',    tier: 'master' },
+  { lvl: 29, name: 'Master V',     tier: 'master' },
+  { lvl: 30, name: 'Grandmaster',  tier: 'grandmaster', milestone: true },
+  { lvl: 31, name: 'GM II',        tier: 'grandmaster' },
+  { lvl: 32, name: 'GM III',       tier: 'grandmaster' },
+  { lvl: 33, name: 'GM IV',        tier: 'grandmaster' },
+  { lvl: 34, name: 'GM V',         tier: 'grandmaster' },
+  { lvl: 35, name: 'Champion I',   tier: 'champion', milestone: true },
+  { lvl: 36, name: 'Champion II',  tier: 'champion' },
+  { lvl: 37, name: 'Champion III', tier: 'champion' },
+  { lvl: 38, name: 'Champion IV',  tier: 'champion' },
+  { lvl: 39, name: 'Champion V',   tier: 'champion' },
+  { lvl: 40, name: 'Legend I',     tier: 'legend', milestone: true },
+  { lvl: 41, name: 'Legend II',    tier: 'legend' },
+  { lvl: 42, name: 'Legend III',   tier: 'legend' },
+  { lvl: 43, name: 'Legend IV',    tier: 'legend' },
+  { lvl: 44, name: 'Legend V',     tier: 'legend' },
+  { lvl: 45, name: 'Mythic I',     tier: 'mythic', milestone: true },
+  { lvl: 46, name: 'Mythic II',    tier: 'mythic' },
+  { lvl: 47, name: 'Mythic III',   tier: 'mythic' },
+  { lvl: 48, name: 'Mythic IV',    tier: 'mythic' },
+  { lvl: 49, name: 'Mythic V',     tier: 'mythic' },
+  { lvl: 50, name: 'LEGENDARY',    tier: 'legendary', milestone: true },
+];
+
+/* What each milestone level unlocks */
+const LEVEL_UNLOCKS = {
+  5:  { games: [],                  themes: ['forest'],              bonus: 200,  text: 'Forest theme unlocked!' },
+  10: { games: ['pizza-master'],    themes: [],                      bonus: 500,  text: 'Pizza Master + 500 coins!' },
+  15: { games: ['chicken-coop'],    themes: ['sunset'],              bonus: 750,  text: 'Chicken Coop + Sunset theme!' },
+  20: { games: ['bee-garden'],      themes: ['galaxy'],              bonus: 1000, text: 'Bee Garden + Galaxy theme!' },
+  25: { games: ['sushi-chef'],      themes: ['mint'],                bonus: 1500, text: 'Sushi Chef + Mint theme!' },
+  30: { games: ['pumpkin-harvest'], themes: [],                      bonus: 2000, text: 'Pumpkin Harvest + 2000 coins!' },
+  35: { games: ['ice-cream-rush'],  themes: ['royal'],               bonus: 3000, text: 'Ice Cream Rush + Royal theme!' },
+  40: { games: ['frost-runner'],    themes: [],                      bonus: 5000, text: 'Frost Runner + 5000 coins!' },
+  45: { games: ['easter-hunt'],     themes: [],                      bonus: 7500, text: 'Easter Hunt + 7500 coins!' },
+  50: { games: ['lava-runner'],     themes: ['legendary'],           bonus: 50000,text: 'LEGENDARY: Lava Runner + Legendary Theme + 50,000 coins!' },
+};
+
+const Level = {
+  get xp() { return Storage.get('xp', 0); },
+  get level() { return Storage.get('level', 1); },
+  xpForLevel(l) { return Math.floor(100 * Math.pow(1.15, l - 1)); },
+  get rank() { return RANKS[Math.min(this.level - 1, RANKS.length - 1)]; },
+  
+  addXP(amount) {
+    let xp = this.xp + amount;
+    let lvl = this.level;
+    const levelUps = [];
+    
+    while (lvl < 50 && xp >= this.xpForLevel(lvl)) {
+      xp -= this.xpForLevel(lvl);
+      lvl++;
+      levelUps.push(lvl);
+    }
+    
+    Storage.set('level', lvl);
+    Storage.set('xp', xp);
+    this.render();
+    
+    // Process level-ups
+    levelUps.forEach((newLvl, i) => {
+      setTimeout(() => this.onLevelUp(newLvl), i * 800);
+    });
+  },
+  
+  onLevelUp(lvl) {
+    const rank = RANKS[Math.min(lvl - 1, RANKS.length - 1)];
+    Sound.rankup(); 
+    confetti(50); 
+    Settings.vibrate([100, 50, 100, 50, 200]);
+    
+    // Milestone rewards
+    if (LEVEL_UNLOCKS[lvl]) {
+      const unlock = LEVEL_UNLOCKS[lvl];
+      // Grant coins
+      Player.coins = Player.coins + unlock.bonus;
+      // Unlock themes
+      const owned = Storage.get('ownedThemes', ['default']);
+      unlock.themes.forEach(t => { if (!owned.includes(t)) owned.push(t); });
+      Storage.set('ownedThemes', owned);
+      // Show rank-up modal
+      const rewardItems = [];
+      if (unlock.bonus) rewardItems.push(`🪙 +${unlock.bonus} coins`);
+      unlock.games.forEach(g => {
+        const game = FEATURED.find(x => x.id === g);
+        if (game) rewardItems.push(`🎮 ${game.name} unlocked`);
+      });
+      unlock.themes.forEach(t => {
+        const theme = THEMES.find(x => x.id === t);
+        if (theme) rewardItems.push(`🎨 ${theme.name} theme unlocked`);
+      });
+      
+      showRankUpModal(lvl, rank, rewardItems);
+    } else {
+      showToast(`🎉 Level ${lvl}! (${rank.name})`);
+      Player.coins = Player.coins + (lvl * 10); // small bonus each level
+    }
+    
+    checkAchievements();
+  },
+  
+  render() {
+    const lvl = this.level;
+    const rank = this.rank;
+    const need = this.xpForLevel(lvl);
+    const cur = this.xp;
+    const pct = Math.min(100, (cur / need) * 100);
+    
+    document.getElementById('lvlNum').textContent = lvl;
+    document.getElementById('lvlBadge').textContent = lvl;
+    document.getElementById('lvlName').textContent = rank.name;
+    document.getElementById('rankName').textContent = rank.name;
+    document.getElementById('lvlXpText').textContent = `${cur} / ${need} XP`;
+    document.getElementById('lvlFill').style.width = pct + '%';
+    document.getElementById('lvlPct').textContent = Math.floor(pct) + '%';
+    
+    // Milestone pulse
+    const lvlNum = document.getElementById('lvlNum');
+    if (rank.milestone) lvlNum.classList.add('rankup');
+    else lvlNum.classList.remove('rankup');
+  }
+};
+
+function showRankUpModal(lvl, rank, rewardItems) {
+  const box = document.getElementById('modalBox');
+  box.classList.add('rankup-modal');
+  document.getElementById('modalEmoji').textContent = '';
+  document.getElementById('modalTitle').innerHTML = '';
+  document.getElementById('modalDesc').innerHTML = '';
+  
+  document.getElementById('modalExtra').innerHTML = `
+    <div class="rankup-badge">${getRankEmoji(rank.tier)}</div>
+    <div class="rankup-title">RANK UP!</div>
+    <div class="rankup-sub">Level ${lvl} · ${rank.name}</div>
+    <div class="rankup-rewards">
+      <h4>✨ REWARDS UNLOCKED ✨</h4>
+      ${rewardItems.map(r => `<div class="rankup-reward-item">${r}</div>`).join('')}
+    </div>
+  `;
+  document.getElementById('modalBtn').textContent = 'Awesome!';
+  document.getElementById('modalBtn').onclick = () => {
+    closeModal();
+    box.classList.remove('rankup-modal');
+    document.getElementById('modalEmoji').textContent = '';
+    document.getElementById('modalTitle').textContent = '';
+    document.getElementById('modalDesc').textContent = '';
+    document.getElementById('modalExtra').innerHTML = '';
+    renderFeatured();
+  };
+  document.getElementById('modal').classList.add('active');
+}
+
+function getRankEmoji(tier) {
+  return { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💠', 
+           diamond: '💎', master: '👑', grandmaster: '⭐', champion: '🏆',
+           legend: '🌟', mythic: '🔥', legendary: '👑' }[tier] || '⭐';
+}
+
+/* ══════════════════════════════════════════════════════════
+   PLAYER
+   ══════════════════════════════════════════════════════════ */
+const Player = {
+  get coins() { return Storage.get('coins', 100); },
+  set coins(v) { Storage.set('coins', Math.max(0, Math.floor(v))); this.render(); },
+  add(n) { this.coins = this.coins + n; if (n > 0) { this.bump(); Sound.coin(); } this.trackEarned(n); },
+  spend(n) { if (this.coins < n) return false; this.coins = this.coins - n; Sound.click(); return true; },
+  bump() { const p = document.getElementById('coinPill'); p.classList.add('bump'); setTimeout(() => p.classList.remove('bump'), 300); },
+  render() { document.getElementById('coinAmount').textContent = this.coins.toLocaleString(); },
+  trackEarned(n) { if (n > 0) Storage.set('totalEarned', (Storage.get('totalEarned', 0) || 0) + n); }
+};
+
+/* ══════════════════════════════════════════════════════════
+   STATS
+   ══════════════════════════════════════════════════════════ */
+const Stats = {
+  get(g) { const s = Storage.get('stats', {}); return s[g] || {}; },
+  update(g, field, value) {
+    const s = Storage.get('stats', {});
+    s[g] = s[g] || {};
+    s[g][field] = value;
+    if ((s[g][field] || 0) > (s[g].best || 0)) s[g].best = value;
+    Storage.set('stats', s);
+  },
+  incr(g, field, n = 1) {
+    const s = Storage.get('stats', {});
+    s[g] = s[g] || {};
+    s[g][field] = (s[g][field] || 0) + n;
+    Storage.set('stats', s);
+  },
+  all() { return Storage.get('stats', {}); }
+};
+
+/* ══════════════════════════════════════════════════════════
+   THEMES
+   ══════════════════════════════════════════════════════════ */
+const THEMES = [
+  { id: 'default', name: 'Cosmic',    price: 0,    preview: 'linear-gradient(135deg,#6c5ce7,#fd79a8)' },
+  { id: 'gold',    name: 'Gold',      price: 300,  preview: 'linear-gradient(135deg,#fdcb6e,#e17055)' },
+  { id: 'ocean',   name: 'Ocean',     price: 300,  preview: 'linear-gradient(135deg,#00b4db,#0083b0)' },
+  { id: 'pink',    name: 'Neon Pink', price: 300,  preview: 'linear-gradient(135deg,#f093fb,#f5576c)' },
+  { id: 'forest',  name: 'Forest',    price: 500,  preview: 'linear-gradient(135deg,#43e97b,#38f9d7)' },
+  { id: 'sunset',  name: 'Sunset',    price: 500,  preview: 'linear-gradient(135deg,#ff6b6b,#feca57)' },
+  { id: 'galaxy',  name: 'Galaxy',    price: 800,  preview: 'linear-gradient(135deg,#a29bfe,#6c5ce7)' },
+  { id: 'mint',    name: 'Mint',      price: 400,  preview: 'linear-gradient(135deg,#00cec9,#55efc4)' },
+  { id: 'royal',   name: 'Royal',     price: 600,  preview: 'linear-gradient(135deg,#c471f5,#fa71cd)' },
+  { id: 'mono',    name: 'Monochrome',price: 1000, preview: 'linear-gradient(135deg,#dfe6e9,#2d3436)' },
+  { id: 'legendary', name: 'LEGENDARY', price: 0,  preview: 'linear-gradient(135deg,#ffd700,#ffed4e)', levelLocked: 50 },
+];
+
+function applyTheme() {
+  const theme = Storage.get('theme', 'default');
+  document.body.className = document.body.className.split(' ').filter(c => !c.startsWith('theme-')).join(' ').trim();
+  document.body.classList.add('theme-' + theme);
+}
+
+function buyTheme(id) {
+  const t = THEMES.find(x => x.id === id);
+  if (!t) return;
+  // Level-locked theme
+  if (t.levelLocked && Level.level < t.levelLocked) {
+    showToast(`🔒 Reach level ${t.levelLocked} to unlock`);
+    return;
+  }
+  const owned = Storage.get('ownedThemes', ['default']);
+  if (owned.includes(id)) {
+    Storage.set('theme', id); applyTheme(); Sound.click();
+    showToast(`🎨 ${t.name} equipped`);
+    return;
+  }
+  if (!Player.spend(t.price)) { showToast('🪙 Not enough coins'); return; }
+  owned.push(id);
+  Storage.set('ownedThemes', owned);
+  Storage.set('theme', id);
+  applyTheme();
+  Sound.unlock(); confetti(20);
+  showToast(`🎨 ${t.name} unlocked!`);
+  checkAchievements();
+}
+
+/* ══════════════════════════════════════════════════════════
+   SEASONS
+   ══════════════════════════════════════════════════════════ */
+const SEASONS = {
+  halloween: { name: 'Halloween', emoji: '🎃', startMonth: 9, startDay: 15, endMonth: 10, endDay: 5, bonus: 1.5,
+    items: ['🎃','👻','🦇','🕷️','🧙‍♀️','💀','🍬','🕸️'],
+    exclusiveGame: 'pumpkin-harvest' },
+  christmas: { name: 'Christmas', emoji: '🎄', startMonth: 11, startDay: 10, endMonth: 11, endDay: 31, bonus: 2.0,
+    items: ['🎄','🎅','⛄','🎁','🔔','⭐','🦌','🍪'],
+    exclusiveGame: 'frost-runner' },
+  spring: { name: 'Spring', emoji: '🌸', startMonth: 2, startDay: 1, endMonth: 4, endDay: 31, bonus: 1.3,
+    items: ['🌸','🌷','🐝','🦋','🌱','🐣','🌼','🌈'],
+    exclusiveGame: 'easter-hunt' },
+  summer: { name: 'Summer', emoji: '☀️', startMonth: 5, startDay: 1, endMonth: 7, endDay: 31, bonus: 1.4,
+    items: ['☀️','🏖️','🍦','🌊','🐚','🍉','🕶️','🏄'],
+    exclusiveGame: 'ice-cream-rush' },
+};
+
+function getActiveSeason() {
+  const now = new Date();
+  const m = now.getMonth(), d = now.getDate();
+  for (const [id, s] of Object.entries(SEASONS)) {
+    if (s.startMonth === s.endMonth) {
+      if (m === s.startMonth && d >= s.startDay && d <= s.endDay) return { id, ...s };
+    } else {
+      if ((m === s.startMonth && d >= s.startDay) || (m === s.endMonth && d <= s.endDay)) return { id, ...s };
+    }
+  }
+  return null;
+}
+
+function applySeason() {
+  document.body.classList.remove('season-halloween', 'season-christmas', 'season-spring', 'season-summer');
+  const season = getActiveSeason();
+  if (season) {
+    document.body.classList.add('season-' + season.id);
+    spawnSeasonalOverlay(season);
+    return season;
+  }
+  return null;
+}
+
+let seasonalTimer = null;
+function spawnSeasonalOverlay(season) {
+  clearInterval(seasonalTimer);
+  document.querySelectorAll('.snow, .seasonal-overlay').forEach(el => el.remove());
+  function spawnItem() {
+    if (!Settings.animations) return;
+    const el = document.createElement('div');
+    el.className = 'snow';
+    el.textContent = season.items[Math.floor(Math.random() * season.items.length)];
+    el.style.left = Math.random() * 100 + '%';
+    el.style.fontSize = (10 + Math.random() * 12) + 'px';
+    el.style.animationDuration = (8 + Math.random() * 8) + 's';
+    el.style.opacity = 0.4 + Math.random() * 0.4;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 18000);
+  }
+  seasonalTimer = setInterval(spawnItem, 800);
+  for (let i = 0; i < 5; i++) setTimeout(spawnItem, i * 200);
+}
+
+/* ══════════════════════════════════════════════════════════
+   21 GAMES REGISTRY
+   ══════════════════════════════════════════════════════════ */
+const FEATURED = [
+  // Original 10
+  { id: 'subway-girl',    name: 'Subway Girl',      icon: '🏃‍♀️', tagline: 'Endless runner',   color: 'linear-gradient(135deg,#4facfe,#00f2fe)', badge: 'hot', cat: 'action' },
+  { id: 'coo-queen',      name: 'Coo Queen',        icon: '👩‍🍳', tagline: 'Cook dishes fast', color: 'linear-gradient(135deg,#f093fb,#f5576c)', badge: 'cook', cat: 'cooking' },
+  { id: 'miss-farming',   name: 'Miss Farming',     icon: '👩‍🌾', tagline: 'Grow & harvest',   color: 'linear-gradient(135deg,#43e97b,#38f9d7)', badge: 'farm', cat: 'farming' },
+  { id: 'miss-dragon',    name: 'Miss Dragon',      icon: '🐉', tagline: 'Match-3 puzzle',   color: 'linear-gradient(135deg,#a18cd1,#fbc2eb)', badge: 'hot', cat: 'puzzle' },
+  { id: 'my-cafe-story',  name: 'My Cafe Story',    icon: '☕', tagline: 'Run your cafe',    color: 'linear-gradient(135deg,#c471f5,#fa71cd)', badge: 'cook', cat: 'cooking' },
+  { id: 'bubble-pop',     name: 'Bubble Pop',       icon: '🫧', tagline: 'Pop bubbles',      color: 'linear-gradient(135deg,#00b4db,#0083b0)', badge: null, cat: 'puzzle' },
+  { id: 'whack-attack',   name: 'Whack Attack',     icon: '🔨', tagline: 'Whack moles!',     color: 'linear-gradient(135deg,#f7971e,#ffd200)', badge: null, cat: 'action' },
+  { id: 'color-switch',   name: 'Color Switch',     icon: '🎨', tagline: 'Match colors',     color: 'linear-gradient(135deg,#eb3349,#f45c43)', badge: null, cat: 'puzzle' },
+  { id: 'rps',            name: 'Rock Paper Scissors', icon: '✂️', tagline: 'Beat computer', color: 'linear-gradient(135deg,#667eea,#764ba2)', badge: null, cat: 'action' },
+  { id: 'memory-flip',    name: 'Memory Flip',      icon: '🧠', tagline: 'Match pairs',      color: 'linear-gradient(135deg,#fa709a,#fee140)', badge: null, cat: 'puzzle' },
+
+  // Farming/Cooking games — some level-locked
+  { id: 'pumpkin-harvest', name: 'Pumpkin Harvest', icon: '🎃', tagline: 'Whack-a-pumpkin',  color: 'linear-gradient(135deg,#ff9500,#c44500)', badge: 'farm', cat: 'farming', levelLocked: 30, seasonal: 'halloween' },
+  { id: 'chicken-coop',    name: 'Chicken Coop',    icon: '🐔', tagline: 'Collect eggs',     color: 'linear-gradient(135deg,#fdcb6e,#e17055)', badge: 'farm', cat: 'farming', levelLocked: 15 },
+  { id: 'bee-garden',      name: 'Bee Garden',      icon: '🐝', tagline: 'Pollinate flowers',color: 'linear-gradient(135deg,#f9ca24,#f0932b)', badge: 'farm', cat: 'farming', levelLocked: 20 },
+  { id: 'ice-cream-rush',  name: 'Ice Cream Rush',  icon: '🍦', tagline: 'Stack & serve',    color: 'linear-gradient(135deg,#ff6a88,#ff99ac)', badge: 'cook', cat: 'cooking', levelLocked: 35, seasonal: 'summer' },
+  { id: 'pizza-master',    name: 'Pizza Master',    icon: '🍕', tagline: 'Make perfect pizzas',color: 'linear-gradient(135deg,#ee0979,#ff6a00)', badge: 'cook', cat: 'cooking', levelLocked: 10 },
+  { id: 'sushi-chef',      name: 'Sushi Chef',      icon: '🍣', tagline: 'Roll sushi',       color: 'linear-gradient(135deg,#00b894,#0984e3)', badge: 'cook', cat: 'cooking', levelLocked: 25 },
+
+  // SEASONAL EXCLUSIVE GAMES
+  { id: 'frost-runner',    name: 'Frost Runner',    icon: '⛄', tagline: 'Christmas runner', color: 'linear-gradient(135deg,#74b9ff,#0984e3)', badge: 'event', cat: 'seasonal', seasonalOnly: 'christmas', levelLocked: 40 },
+  { id: 'easter-hunt',     name: 'Easter Hunt',     icon: '🐰', tagline: 'Find the eggs',    color: 'linear-gradient(135deg,#fd79a8,#e84393)', badge: 'event', cat: 'seasonal', seasonalOnly: 'spring', levelLocked: 45 },
+  { id: 'lava-runner',     name: 'Lava Runner',     icon: '🌋', tagline: 'LEGENDARY runner', color: 'linear-gradient(135deg,#ff4500,#8b0000)', badge: 'event', cat: 'seasonal', seasonalOnly: null, levelLocked: 50 },
+  { id: 'santa-dash',      name: 'Santa Dash',      icon: '🎅', tagline: 'Deliver gifts!',   color: 'linear-gradient(135deg,#e74c3c,#27ae60)', badge: 'event', cat: 'seasonal', seasonalOnly: 'christmas' },
+];
+
+const FARM_COOK_IDS = ['coo-queen','miss-farming','my-cafe-story','pumpkin-harvest','chicken-coop','bee-garden','ice-cream-rush','pizza-master','sushi-chef'];
+
+/* Check if game is unlocked */
+function isGameUnlocked(game) {
+  const level = Level.level;
+  const season = getActiveSeason();
+  
+  // Level-locked
+  if (game.levelLocked && level < game.levelLocked) return false;
+  
+  // Seasonal exclusive — only available during its season
+  if (game.seasonalOnly) {
+    if (!season || season.id !== game.seasonalOnly) return false;
+  }
+  
+  return true;
+}
+
+function getLockReason(game) {
+  if (game.levelLocked && Level.level < game.levelLocked) return `Reach level ${game.levelLocked}`;
+  if (game.seasonalOnly) {
+    const s = SEASONS[game.seasonalOnly];
+    return `${s.emoji} ${s.name} only`;
+  }
+  return null;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ACHIEVEMENTS
+   ══════════════════════════════════════════════════════════ */
+const ACHIEVEMENTS = [
+  { id: 'first_coin',   emoji: '🪙', name: 'First Coin',     desc: 'Earn your first coin',       reward: 10, check: () => (Storage.get('totalEarned',0)||0) >= 1 },
+  { id: 'hundredaire',  emoji: '💰', name: 'Hundredaire',    desc: 'Accumulate 500 coins',       reward: 25, check: () => Player.coins >= 500 },
+  { id: 'rich',         emoji: '💎', name: 'Rich',           desc: 'Accumulate 2000 coins',      reward: 100, check: () => Player.coins >= 2000 },
+  { id: 'mega_rich',    emoji: '👑', name: 'Mega Rich',      desc: 'Accumulate 10,000 coins',    reward: 500, check: () => Player.coins >= 10000 },
+  { id: 'level_5',      emoji: '⭐', name: 'Rising Star',    desc: 'Reach level 5',              reward: 30, check: () => Level.level >= 5 },
+  { id: 'level_10',     emoji: '🌟', name: 'Pro Gamer',      desc: 'Reach level 10',             reward: 75, check: () => Level.level >= 10 },
+  { id: 'level_25',     emoji: '✨', name: 'Master',         desc: 'Reach level 25',             reward: 250, check: () => Level.level >= 25 },
+  { id: 'level_50',     emoji: '👑', name: 'LEGENDARY',      desc: 'Reach level 50',             reward: 1000, check: () => Level.level >= 50 },
+  { id: 'cook_10',      emoji: '👩‍🍳', name: 'Chef',           desc: 'Serve 10 dishes',            reward: 30, check: () => (Stats.get('coo-queen').served || 0) >= 10 },
+  { id: 'cook_50',      emoji: '🍳', name: 'Master Chef',    desc: 'Serve 50 dishes',            reward: 100, check: () => (Stats.get('coo-queen').served || 0) >= 50 },
+  { id: 'farm_20',      emoji: '🌾', name: 'Farmer',         desc: 'Harvest 20 crops',           reward: 30, check: () => (Stats.get('miss-farming').harvested || 0) >= 20 },
+  { id: 'farm_100',     emoji: '🚜', name: 'Farm Tycoon',    desc: 'Harvest 100 crops',          reward: 150, check: () => (Stats.get('miss-farming').harvested || 0) >= 100 },
+  { id: 'pizza_10',     emoji: '🍕', name: 'Pizzaiolo',     desc: 'Make 10 pizzas',             reward: 40, check: () => (Stats.get('pizza-master').pizzas || 0) >= 10 },
+  { id: 'sushi_10',     emoji: '🍣', name: 'Sushi Roll',    desc: 'Roll 10 sushi',              reward: 40, check: () => (Stats.get('sushi-chef').sushi || 0) >= 10 },
+  { id: 'play_all',     emoji: '🎮', name: 'Explorer',       desc: 'Play all base games',        reward: 500, check: () => {
+    const baseIds = ['subway-girl','coo-queen','miss-farming','miss-dragon','my-cafe-story','bubble-pop','whack-attack','color-switch','rps','memory-flip'];
+    const played = Storage.get('playedGames', []);
+    return baseIds.every(id => played.includes(id));
+  } },
+  { id: 'daily_3',      emoji: '📅', name: 'Loyal Player',   desc: 'Claim daily 3 days',         reward: 100, check: () => (Storage.get('dailyStreak', 0)) >= 3 },
+  { id: 'daily_7',      emoji: '🔥', name: 'Week Streak',    desc: 'Claim daily 7 days',         reward: 300, check: () => (Storage.get('dailyStreak', 0)) >= 7 },
+  { id: 'quest_10',     emoji: '🎯', name: 'Quest Hunter',   desc: 'Complete 10 quests',         reward: 100, check: () => (Storage.get('questsCompleted', 0)) >= 10 },
+  { id: 'theme_5',      emoji: '🎨', name: 'Theme Collector',desc: 'Own 5 themes',               reward: 300, check: () => (Storage.get('ownedThemes', ['default'])).length >= 5 },
+  { id: 'theme_all',    emoji: '🌈', name: 'Style Master',   desc: 'Own all themes',             reward: 1000, check: () => (Storage.get('ownedThemes', ['default'])).length >= 11 },
+  { id: 'gift_10',      emoji: '🎁', name: 'Gift Collector', desc: 'Open 10 gifts',              reward: 100, check: () => (Storage.get('giftsOpened', 0) || 0) >= 10 },
+  { id: 'season_master',emoji: '🎊', name: 'Festive Master', desc: 'Play 3 seasonal games',      reward: 500, check: () => {
+    const played = Storage.get('playedGames', []);
+    const seasonal = ['frost-runner','easter-hunt','santa-dash','lava-runner'];
+    return seasonal.filter(s => played.includes(s)).length >= 3;
+  } },
+  { id: 'mp_rps',       emoji: '👥', name: 'Friendly',       desc: 'Play multiplayer RPS',       reward: 75, check: () => (Storage.get('mpRpsPlays', 0) || 0) >= 1 },
+];
+
+function checkAchievements() {
+  const claimed = Storage.get('achievements', []);
+  const pending = Storage.get('pendingAchievements', []);
+  let newPending = [];
+  ACHIEVEMENTS.forEach(a => {
+    if (!claimed.includes(a.id) && !pending.includes(a.id) && a.check()) newPending.push(a.id);
+  });
+  if (newPending.length) {
+    const allPending = [...pending, ...newPending];
+    Storage.set('pendingAchievements', allPending);
+    newPending.forEach((id, i) => {
+      const a = ACHIEVEMENTS.find(x => x.id === id);
+      setTimeout(() => {
+        Sound.unlock(); confetti(20);
+        showToast(`🏆 ${a.name}!`);
+        updateAchievementDot();
+      }, i * 700);
+    });
+  }
+  renderAchievements();
+}
+
+function claimAchievement(id) {
+  const a = ACHIEVEMENTS.find(x => x.id === id);
+  if (!a) return;
+  const pending = Storage.get('pendingAchievements', []);
+  if (!pending.includes(id)) return;
+  const claimed = Storage.get('achievements', []);
+  claimed.push(id);
+  Storage.set('achievements', claimed);
+  Storage.set('pendingAchievements', pending.filter(x => x !== id));
+  Player.coins = Player.coins + a.reward;
+  Level.addXP(30);
+  Sound.coin(); confetti(15);
+  renderAchievements();
+  updateAchievementDot();
+  showToast(`✅ ${a.name} +🪙${a.reward}`);
+}
+
+function updateAchievementDot() {
+  const pending = Storage.get('pendingAchievements', []);
+  const dot = document.getElementById('achDot');
+  if (dot) dot.style.display = pending.length > 0 ? 'block' : 'none';
+}
+
+function renderAchievements() {
+  const claimed = Storage.get('achievements', []);
+  const pending = Storage.get('pendingAchievements', []);
+  const grid = document.getElementById('achGrid');
+  if (!grid) return;
+  grid.innerHTML = ACHIEVEMENTS.map(a => {
+    const isC = claimed.includes(a.id), isP = pending.includes(a.id);
+    return `<div class="ach-card ${isC ? 'unlocked' : ''}">
+      <div class="ach-emoji">${a.emoji}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-desc">${a.desc}</div>
+      <div class="ach-reward">🪙 ${a.reward}</div>
+      ${isP ? `<button class="claim-btn" onclick="event.stopPropagation();claimAchievement('${a.id}')">CLAIM</button>` : ''}
+      ${isC ? '<div style="font-size:8.5px;color:#00b894;margin-top:4px;font-weight:700">✓ CLAIMED</div>' : ''}
+    </div>`;
+  }).join('');
+  const prog = document.getElementById('achProgress');
+  if (prog) prog.textContent = `${claimed.length}/${ACHIEVEMENTS.length}`;
+  updateAchievementDot();
+}
+
+/* DAILY */
+const Daily = {
+  get lastClaim() { return Storage.get('dailyLastClaim', 0); },
+  set lastClaim(v) { Storage.set('dailyLastClaim', v); },
+  get streak() { return Storage.get('dailyStreak', 0); },
+  set streak(v) { Storage.set('dailyStreak', v); },
+  canClaim() { return Date.now() - this.lastClaim >= 24 * 60 * 60 * 1000; },
+  claim() {
+    const now = Date.now(), oneDay = 24 * 60 * 60 * 1000, twoDays = 2 * oneDay;
+    const gap = now - this.lastClaim;
+    if (gap < oneDay) return;
+    if (gap > twoDays && this.lastClaim !== 0) this.streak = 0;
+    this.streak = Math.min(this.streak + 1, 7);
+    this.lastClaim = now;
+    const rewards = [50, 75, 100, 150, 200, 300, 500];
+    const reward = rewards[Math.min(this.streak - 1, 6)];
+    const season = getActiveSeason();
+    const finalReward = season ? Math.round(reward * season.bonus) : reward;
+    Player.coins = Player.coins + finalReward;
+    Level.addXP(50);
+    Sound.win(); confetti(35); Settings.vibrate([50,30,50]);
+    showToast(`📅 Day ${this.streak}! +🪙${finalReward}${season ? ' (×' + season.bonus + ')' : ''}`);
+    checkAchievements();
+    renderDaily();
+  }
+};
+
+function renderDaily() {
+  const slot = document.getElementById('dailySlot');
+  if (!slot) return;
+  const canClaim = Daily.canClaim();
+  const streak = Daily.streak;
+  const season = getActiveSeason();
+  slot.innerHTML = `<div class="banner banner-daily" onclick="${canClaim ? 'Daily.claim();renderDaily();' : ''}">
+    <div class="b-emoji">🎁</div>
+    <div class="b-text">
+      <h3>${canClaim ? 'Daily Reward Ready!' : 'Come back tomorrow!'}</h3>
+      <p>Day ${streak || 1} streak${season ? ' · ×' + season.bonus + ' ' + season.name + ' bonus!' : ' · Day 7 gives 🪙 500'}</p>
+    </div>
+    <button class="b-btn">${canClaim ? 'Claim' : '✓'}</button>
+  </div>`;
+}
+
+/* GIFT */
+const Gifts = {
+  get lastOpen() { return Storage.get('giftLastOpen', 0); },
+  set lastOpen(v) { Storage.set('giftLastOpen', v); },
+  get ready() { return Date.now() - this.lastOpen >= 4 * 60 * 60 * 1000; },
+  get nextIn() {
+    const r = 4 * 60 * 60 * 1000 - (Date.now() - this.lastOpen);
+    if (r <= 0) return null;
+    return `${Math.floor(r/3600000)}h ${Math.floor((r%3600000)/60000)}m`;
+  },
+  open() {
+    if (!this.ready) { showToast(`⏰ Gift in ${this.nextIn}`); return; }
+    this.lastOpen = Date.now();
+    const rewards = [
+      { emoji: '🪙', name: 'Coins', val: 100 + Math.floor(Math.random() * 200) },
+      { emoji: '💰', name: 'Coins', val: 300 + Math.floor(Math.random() * 300) },
+      { emoji: '⭐', name: 'XP', val: 100 + Math.floor(Math.random() * 200) },
+      { emoji: '💎', name: 'Jackpot', val: 1000 },
+    ];
+    const season = getActiveSeason();
+    let r = rewards[Math.floor(Math.random() * rewards.length)];
+    if (season && Math.random() < 0.4) {
+      r = { emoji: season.emoji, name: season.name + ' Bonus', val: Math.round(r.val * season.bonus) };
+    }
+    if (r.name === 'XP') { Level.addXP(r.val); showModal(r.emoji, `Gift!`, `+${r.val} XP`, 'Nice!', null); }
+    else { Player.coins = Player.coins + r.val; showModal(r.emoji, `${r.name}!`, `+🪙 ${r.val}`, 'Collect!', null); }
+    Storage.set('giftsOpened', (Storage.get('giftsOpened', 0) || 0) + 1);
+    Sound.win(); confetti(30);
+    checkAchievements(); renderGift();
+  }
+};
+
+function renderGift() {
+  const slot = document.getElementById('giftSlot');
+  if (!slot) return;
+  const ready = Gifts.ready;
+  slot.innerHTML = `<div class="banner banner-gift" onclick="Gifts.open()">
+    <div class="b-emoji">🎁</div>
+    <div class="b-text">
+      <h3>${ready ? 'Free Gift Available!' : 'Next gift soon'}</h3>
+      <p>${ready ? 'Tap to open · Random reward' : `Ready in ${Gifts.nextIn}`}</p>
+    </div>
+    <button class="b-btn">${ready ? 'Open' : '⏰'}</button>
+  </div>`;
+}
+
+/* EVENT */
+function renderEvent() {
+  const slot = document.getElementById('eventSlot');
+  if (!slot) return;
+  const season = getActiveSeason();
+  if (!season) { slot.innerHTML = ''; return; }
+  slot.innerHTML = `<div class="banner banner-event">
+    <div class="b-emoji">${season.emoji}</div>
+    <div class="b-text">
+      <h3>${season.name} Event!</h3>
+      <p>All rewards ×${season.bonus} · Exclusive game available</p>
+    </div>
+    <button class="b-btn">Active</button>
+  </div>`;
+}
+
+/* LEVEL BANNER */
+function renderLevelBanner() {
+  const slot = document.getElementById('levelSlot');
+  if (!slot) return;
+  // Find next milestone
+  const nextMile = Object.keys(LEVEL_UNLOCKS).map(Number).find(l => l > Level.level);
+  if (!nextMile) { slot.innerHTML = ''; return; }
+  const unlock = LEVEL_UNLOCKS[nextMile];
+  const rank = RANKS[nextMile - 1];
+  slot.innerHTML = `<div class="banner banner-level">
+    <div class="b-emoji">${getRankEmoji(rank.tier)}</div>
+    <div class="b-text">
+      <h3>Next milestone: Level ${nextMile}</h3>
+      <p>${unlock.text}</p>
+    </div>
+  </div>`;
+}
+
+/* QUESTS */
+const QUEST_POOL = [
+  { id: 'play_3',      emoji: '🎮', name: 'Play 3 games',         target: 3,  reward: 20, type: 'games_played' },
+  { id: 'earn_100',    emoji: '🪙', name: 'Earn 100 coins',       target: 100, reward: 30, type: 'coins_earned' },
+  { id: 'play_cook',   emoji: '👩‍🍳', name: 'Play a cooking game',  target: 1, reward: 15, type: 'cook_played' },
+  { id: 'play_farm',   emoji: '🌾', name: 'Play a farming game',   target: 1, reward: 15, type: 'farm_played' },
+  { id: 'xp_100',      emoji: '⭐', name: 'Earn 100 XP',          target: 100, reward: 30, type: 'xp_earned' },
+  { id: 'play_runner', emoji: '🏃‍♀️', name: 'Play Subway Girl',     target: 1, reward: 15, type: 'subway-girl_plays' },
+];
+
+function getTodayQuests() {
+  const today = new Date().toDateString();
+  const saved = Storage.get('dailyQuests', {});
+  if (saved.date === today && saved.quests) return saved;
+  const pool = [...QUEST_POOL].sort(() => Math.random() - 0.5).slice(0, 3);
+  const quests = pool.map(q => ({ ...q, progress: 0, claimed: false }));
+  const data = { date: today, quests };
+  Storage.set('dailyQuests', data);
+  return data;
+}
+
+function updateQuestProgress(type, amount = 1) {
+  const data = getTodayQuests();
+  let changed = false;
+  data.quests.forEach(q => {
+    if (q.type === type && !q.claimed) {
+      const before = q.progress;
+      q.progress = Math.min(q.target, q.progress + amount);
+      if (q.progress !== before) changed = true;
+      if (q.progress >= q.target && !q.claimed) {
+        q.claimed = true;
+        Player.coins = Player.coins + q.reward;
+        Level.addXP(30);
+        Storage.set('questsCompleted', (Storage.get('questsCompleted', 0) || 0) + 1);
+        setTimeout(() => { Sound.win(); confetti(15); showToast(`🎯 Quest done! +🪙${q.reward}`); }, 100);
+      }
+    }
+  });
+  if (changed) { Storage.set('dailyQuests', data); renderQuests(); checkAchievements(); }
+}
+
+function renderQuests() {
+  const data = getTodayQuests();
+  const row = document.getElementById('questsRow');
+  if (!row) return;
+  const done = data.quests.filter(q => q.claimed).length;
+  document.getElementById('questsDone').textContent = `${done}/3 done`;
+  row.innerHTML = data.quests.map(q => {
+    const pct = (q.progress / q.target) * 100;
+    return `<div class="quest-card ${q.claimed ? 'complete' : ''}">
+      <div class="quest-top">
+        <div class="quest-emoji">${q.emoji}</div>
+        <div class="quest-info">
+          <div class="quest-name">${q.name}</div>
+          <div class="quest-reward">🪙 ${q.reward}</div>
+        </div>
+        ${q.claimed ? '<div style="font-size:14px">✅</div>' : ''}
+      </div>
+      <div class="quest-progress"><div class="quest-progress-bar" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+/* LEADERBOARD */
+const BOT_NAMES = ['PixelPro','NinjaCat','StarLord','Mochi','Rocket','Blaze','Frosty','Zenko','Kira','Blinky','Echo','Nova','Cosmo','Pixel','Sparkle','Viper','Wizard','Lucky','Shadow','Comet'];
+function getLeaderboard() {
+  const saved = Storage.get('leaderboard', null);
+  if (saved && Date.now() - saved.updated < 6 * 60 * 60 * 1000) return saved.data;
+  const bots = BOT_NAMES.map(name => ({
+    name, emoji: ['🤖','🐱','🦊','🐼','🦁','🐯','🦄','🐲','👽','🤠'][Math.floor(Math.random()*10)],
+    coins: Math.floor(300 + Math.random() * 8000),
+    level: Math.floor(1 + Math.random() * 40),
+    isBot: true
+  }));
+  bots.push({ name: 'You', emoji: '😎', coins: Storage.get('totalEarned', 0) || Player.coins, level: Level.level, isYou: true });
+  bots.sort((a, b) => b.coins - a.coins);
+  const data = bots.map((b, i) => ({ ...b, rank: i + 1 }));
+  Storage.set('leaderboard', { updated: Date.now(), data });
+  return data;
+}
+
+function renderLbPreview() {
+  const lb = getLeaderboard().slice(0, 3);
+  document.getElementById('lbPreview').innerHTML = lb.map((b, i) => `
+    <div class="lb-row ${b.isYou ? 'you' : ''}">
+      <div class="lb-rank top${i+1}">${i+1}</div>
+      <div class="lb-avatar">${b.emoji}</div>
+      <div class="lb-info"><div class="lb-name">${b.name} · Lv ${b.level}</div><div class="lb-score">🪙 ${b.coins.toLocaleString()}</div></div>
+      ${i === 0 ? '<div style="font-size:18px">👑</div>' : ''}
+    </div>
+  `).join('');
+}
+
+/* ANIMATIONS */
+function flyCoinsToPill(count = 1, fromX, fromY) {
+  if (!Settings.animations) { Player.add(count); return; }
+  const pill = document.getElementById('coinPill');
+  const rect = pill.getBoundingClientRect();
+  const tx = rect.left + rect.width / 2, ty = rect.top + rect.height / 2;
+  for (let i = 0; i < Math.min(count, 5); i++) {
+    const coin = document.createElement('div');
+    coin.className = 'fly-coin'; coin.textContent = '🪙';
+    coin.style.left = (fromX + (Math.random() - 0.5) * 40) + 'px';
+    coin.style.top = (fromY + (Math.random() - 0.5) * 40) + 'px';
+    document.body.appendChild(coin);
+    const dx = tx - fromX + (Math.random() - 0.5) * 20;
+    const dy = ty - fromY + (Math.random() - 0.5) * 20;
+    requestAnimationFrame(() => {
+      coin.style.transition = 'transform .9s cubic-bezier(.4,-.3,.4,1.3), opacity .9s ease';
+      coin.style.transform = `translate(${dx}px, ${dy}px) scale(.4) rotate(360deg)`;
+      coin.style.opacity = '0';
+    });
+    setTimeout(() => coin.remove(), 1000);
+  }
+}
+
+function earn(n, x, y) {
+  if (n <= 0) return;
+  const season = getActiveSeason();
+  const boosted = season ? Math.round(n * season.bonus) : n;
+  flyCoinsToPill(boosted, x ?? innerWidth / 2, y ?? innerHeight / 2);
+  setTimeout(() => {
+    Player.add(boosted);
+    Level.addXP(Math.min(boosted, 20));
+    updateQuestProgress('coins_earned', boosted);
+    updateQuestProgress('xp_earned', Math.min(boosted, 20));
+    Settings.vibrate(10);
+    checkAchievements();
+  }, 500);
+}
+
+function particleBurst(x, y, count = 10, emoji = '✨') {
+  if (!Settings.animations) return;
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'burst-particle'; p.textContent = emoji;
+    p.style.left = x + 'px'; p.style.top = y + 'px';
+    document.body.appendChild(p);
+    const a = Math.random() * Math.PI * 2;
+    const s = 40 + Math.random() * 80;
+    const dx = Math.cos(a) * s, dy = Math.sin(a) * s - 30;
+    requestAnimationFrame(() => {
+      p.style.transition = 'transform .7s cubic-bezier(.2,.8,.3,1), opacity .7s';
+      p.style.transform = `translate(${dx}px, ${dy}px) scale(0) rotate(${Math.random() * 360}deg)`;
+      p.style.opacity = '0';
+    });
+    setTimeout(() => p.remove(), 800);
+  }
+}
+
+function confetti(count = 30) {
+  if (!Settings.animations) return;
+  const colors = ['#6c5ce7','#fd79a8','#00cec9','#fdcb6e','#ff6b6b','#ffd700'];
+  for (let i = 0; i < count; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.left = (Math.random() * innerWidth) + 'px';
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    document.body.appendChild(c);
+    const dur = 1500 + Math.random() * 1500;
+    const rot = (Math.random() - 0.5) * 720;
+    const dx = (Math.random() - 0.5) * 200;
+    requestAnimationFrame(() => {
+      c.style.transition = `transform ${dur}ms ease-in, opacity ${dur}ms ease-in`;
+      c.style.transform = `translate(${dx}px, ${innerHeight + 40}px) rotate(${rot}deg)`;
+      c.style.opacity = '0.8';
+    });
+    setTimeout(() => c.remove(), dur + 100);
+  }
+}
+
+/* TOAST / MODAL */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function showModal(emoji, title, desc, btnText, onBtn, extraHTML = '') {
+  document.getElementById('modalEmoji').textContent = emoji;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalDesc').innerHTML = desc;
+  document.getElementById('modalExtra').innerHTML = extraHTML;
+  const btn = document.getElementById('modalBtn');
+  btn.textContent = btnText;
+  btn.onclick = () => { closeModal(); onBtn && onBtn(); };
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal() { 
+  document.getElementById('modal').classList.remove('active');
+  document.getElementById('modalBox').classList.remove('rankup-modal');
+}
+
+/* ══════════════════════════════════════════════════════════
+   UI RENDER
+   ══════════════════════════════════════════════════════════ */
+function getStars(gameId) {
+  const best = Stats.get(gameId).best || 0;
+  if (best >= 500) return 3;
+  if (best >= 200) return 2;
+  if (best >= 50) return 1;
+  return 0;
+}
+
+function renderGameCard(g, i) {
+  const stars = getStars(g.id);
+  const locked = !isGameUnlocked(g);
+  const lockReason = locked ? getLockReason(g) : null;
+  
+  let badgeHTML = '';
+  if (g.badge === 'hot') badgeHTML = '<div class="card-badge hot">🔥 HOT</div>';
+  else if (g.badge === 'farm') badgeHTML = '<div class="card-badge farm">🌱</div>';
+  else if (g.badge === 'cook') badgeHTML = '<div class="card-badge cook">🍳</div>';
+  else if (g.badge === 'event') badgeHTML = '<div class="card-badge event">🎊 EVENT</div>';
+  else badgeHTML = '<div class="card-badge play">PLAY</div>';
+  
+  if (locked && g.levelLocked) {
+    badgeHTML = `<div class="card-badge lock-badge">🔒 Lv ${g.levelLocked}</div>`;
+  }
+  
+  return `<div class="game-card ${locked ? 'locked' : ''}" style="animation-delay:${i * 0.03}s" onclick="handleGameClick('${g.id}')">
+    <div class="card-bg" style="background:${g.color}">${g.icon}</div>
+    <div class="card-overlay"></div>
+    ${badgeHTML}
+    ${stars && !locked ? `<div class="card-stars">${'⭐'.repeat(stars)}</div>` : ''}
+    ${locked ? `<div class="card-lock-info">${lockReason}</div>` : ''}
+    <div class="card-content"><h3>${g.name}</h3><p>${g.tagline}</p></div>
+  </div>`;
+}
+
+function handleGameClick(id) {
+  const g = FEATURED.find(x => x.id === id);
+  if (!g) return;
+  if (!isGameUnlocked(g)) {
+    const reason = getLockReason(g);
+    Sound.wrong();
+    showModal('🔒', 'Locked!', reason, 'OK', null);
+    return;
+  }
+  openGame(id);
+}
+
+function renderFeatured(filter = '') {
+  const grid = document.getElementById('featuredGrid');
+  let list = FEATURED;
+  if (filter) {
+    const q = filter.toLowerCase();
+    list = list.filter(g => g.name.toLowerCase().includes(q) || g.tagline.toLowerCase().includes(q));
+  }
+  if (list.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-dim);padding:30px;font-size:12px">No games found</div>';
+    return;
+  }
+  grid.innerHTML = list.map((g, i) => renderGameCard(g, i)).join('');
+  document.getElementById('playableCount').textContent = `${FEATURED.length} games`;
+}
+
+function renderFarmCook() {
+  const grid = document.getElementById('farmCookGrid');
+  const list = FEATURED.filter(g => FARM_COOK_IDS.includes(g.id));
+  grid.innerHTML = list.map((g, i) => renderGameCard(g, i)).join('');
+  document.getElementById('farmCookCount').textContent = `${list.length} games`;
+}
+
+function renderChips() {
+  const CHIPS = [
+    { id: 'all', icon: '✨', label: 'All' },
+    { id: 'farming', icon: '🌱', label: 'Farming' },
+    { id: 'cooking', icon: '🍳', label: 'Cooking' },
+    { id: 'puzzle', icon: '🧩', label: 'Puzzle' },
+    { id: 'action', icon: '⚡', label: 'Action' },
+    { id: 'seasonal', icon: '🎊', label: 'Seasonal' },
+    { id: 'hot', icon: '🔥', label: 'Hot' },
+  ];
+  document.getElementById('chips').innerHTML = CHIPS.map((c, i) =>
+    `<button class="chip ${i === 0 ? 'active' : ''}" onclick="setChip(this, '${c.id}')">${c.icon} ${c.label}</button>`
+  ).join('');
+}
+
+function setChip(el, id) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active'); Sound.click();
+  let list = FEATURED;
+  if (id === 'farming') list = FEATURED.filter(g => g.cat === 'farming');
+  else if (id === 'cooking') list = FEATURED.filter(g => g.cat === 'cooking');
+  else if (id === 'puzzle') list = FEATURED.filter(g => g.cat === 'puzzle');
+  else if (id === 'action') list = FEATURED.filter(g => g.cat === 'action');
+  else if (id === 'seasonal') list = FEATURED.filter(g => g.cat === 'seasonal');
+  else if (id === 'hot') list = FEATURED.filter(g => g.badge === 'hot');
+  
+  document.getElementById('featuredGrid').innerHTML = list.map((g, i) => renderGameCard(g, i)).join('');
+  document.getElementById('featuredTitle').textContent = 
+    id === 'all' ? '⭐ All Games' : `${el.textContent.trim()}`;
+}
+
+function handleSearch(v) {
+  renderFeatured(v.trim());
+  if (!v.trim()) renderFarmCook();
+}
+
+/* ══════════════════════════════════════════════════════════
+   SUBPAGES
+   ══════════════════════════════════════════════════════════ */
+function ensureSubpage(id, title) {
+  let page = document.getElementById(id);
+  if (!page) {
+    page = document.createElement('div');
+    page.id = id; page.className = 'subpage';
+    page.innerHTML = `<div class="subpage-header">
+      <button class="game-back" onclick="closeSubpage('${id}')">
+        <svg viewBox="0 0 24 24" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+      <h2 id="${id}Title">${title}</h2>
+    </div>
+    <div class="subpage-body" id="${id}Body"></div>`;
+    document.body.appendChild(page);
+  }
+  return page;
+}
+function openSubpageWith(id, renderFn, title) {
+  const page = ensureSubpage(id, title);
+  page.classList.add('open');
+  renderFn && renderFn();
+}
+function closeSubpage(id) { document.getElementById(id).classList.remove('open'); }
+
+function switchTab(el, tab) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  el.classList.add('active'); Sound.click(); Settings.vibrate(5);
+  if (tab === 'home') document.getElementById('homeContent').scrollTo({ top: 0, behavior: 'smooth' });
+  else if (tab === 'levels') openSubpageWith('levelsPage', renderLevelsPage, '⭐ Level Progress');
+  else if (tab === 'stats') openSubpageWith('statsPage', renderStatsPage, '📊 Your Stats');
+  else if (tab === 'shop') openSubpageWith('shopPage', renderShop, '🛒 Shop');
+  else if (tab === 'leaderboard') openSubpageWith('lbPage', renderLeaderboardFull, '🏆 Leaderboard');
+}
+
+function openAchievements() {
+  Sound.click();
+  const page = ensureSubpage('achPage', '🏆 Achievements');
+  page.querySelector('#achPageTitle').innerHTML = '🏆 Achievements <span style="font-size:10px;color:var(--text-dim);font-weight:600;margin-left:6px" id="achProgress"></span>';
+  page.classList.add('open');
+  renderAchievements();
+}
+function openLeaderboard() { openSubpageWith('lbPage', renderLeaderboardFull, '🏆 Leaderboard'); }
+
+/* LEVELS PAGE */
+function renderLevelsPage() {
+  const body = document.getElementById('levelsPageBody');
+  const lvl = Level.level;
+  const rank = Level.rank;
+  const need = Level.xpForLevel(lvl);
+  const cur = Level.xp;
+  const pct = Math.min(100, (cur / need) * 100);
+  
+  const unlockedThemes = Storage.get('ownedThemes', ['default']);
+  const unlockedGames = FEATURED.filter(g => !g.levelLocked || Level.level >= g.levelLocked).length;
+  const totalGames = FEATURED.length;
+  
+  let html = `
+    <div style="text-align:center;padding:18px 12px;background:linear-gradient(135deg,rgba(108,92,231,.2),rgba(253,121,168,.15));border-radius:16px;margin-bottom:14px">
+      <div style="font-size:56px;line-height:1">${getRankEmoji(rank.tier)}</div>
+      <div style="font-size:26px;font-weight:900;margin-top:6px;background:linear-gradient(90deg,#fff,#a29bfe);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Level ${lvl}</div>
+      <div style="font-size:14px;color:var(--accent);font-weight:700;margin-top:2px">${rank.name}</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:8px">${cur} / ${need} XP</div>
+      <div style="height:8px;background:rgba(0,0,0,.3);border-radius:8px;overflow:hidden;margin-top:6px">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:8px;transition:width .6s"></div>
+      </div>
+    </div>
+    
+    <div class="stat-row">
+      <div class="stat-row-emoji">🎮</div>
+      <div class="stat-row-info"><div class="stat-row-name">Games Unlocked</div><div class="stat-row-val">${unlockedGames} / ${totalGames}</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-row-emoji">🎨</div>
+      <div class="stat-row-info"><div class="stat-row-name">Themes Owned</div><div class="stat-row-val">${unlockedThemes.length} / ${THEMES.length}</div></div>
+    </div>
+    
+    <h3 style="margin:16px 0 10px;font-size:12px;color:var(--text-dim);font-weight:700">🎁 Milestone Rewards</h3>
+  `;
+  
+  Object.entries(LEVEL_UNLOCKS).forEach(([lvlNum, unlock]) => {
+    const n = Number(lvlNum);
+    const achieved = Level.level >= n;
+    const rank = RANKS[n - 1];
+    const rewardItems = [];
+    if (unlock.bonus) rewardItems.push(`🪙 ${unlock.bonus}`);
+    unlock.games.forEach(g => {
+      const game = FEATURED.find(x => x.id === g);
+      if (game) rewardItems.push(`${game.icon} ${game.name}`);
+    });
+    unlock.themes.forEach(t => {
+      const theme = THEMES.find(x => x.id === t);
+      if (theme) rewardItems.push(`🎨 ${theme.name}`);
+    });
+    
+    html += `
+      <div class="stat-row" style="${achieved ? 'background:linear-gradient(135deg,rgba(0,184,148,.15),rgba(0,206,201,.1));border:1px solid rgba(0,184,148,.3)' : ''}">
+        <div style="width:32px;height:32px;border-radius:50%;background:${achieved ? 'linear-gradient(135deg,#00b894,#00cec9)' : 'rgba(255,255,255,.1)'};display:grid;place-items:center;font-weight:800;font-size:12px;flex-shrink:0">
+          ${achieved ? '✓' : n}
+        </div>
+        <div class="stat-row-info">
+          <div class="stat-row-name">Level ${n} · ${rank.name} ${achieved ? '✓' : ''}</div>
+          <div class="stat-row-val">${rewardItems.join(' · ')}</div>
+        </div>
+      </div>
+    `;
+  });
+  
+  body.innerHTML = html;
+}
+
+function openSettings() {
+  const page = ensureSubpage('settingsPage', '⚙️ Settings');
+  const body = page.querySelector('#settingsPageBody');
+  const ownedThemes = Storage.get('ownedThemes', ['default']);
+  body.innerHTML = `
+    <div class="setting-row">
+      <div class="setting-label"><span>🔊</span> Sound</div>
+      <div class="toggle ${Settings.sound ? 'on' : ''}" onclick="toggleSetting('sound', this)"></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label"><span>📳</span> Haptics</div>
+      <div class="toggle ${Settings.haptics ? 'on' : ''}" onclick="toggleSetting('haptics', this)"></div>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label"><span>✨</span> Animations</div>
+      <div class="toggle ${Settings.animations ? 'on' : ''}" onclick="toggleSetting('animations', this)"></div>
+    </div>
+    <h3 style="margin:16px 0 8px;font-size:11px;color:var(--text-dim);font-weight:700">🎨 Themes (${ownedThemes.length}/${THEMES.length})</h3>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+      ${THEMES.map(t => {
+        const owned = ownedThemes.includes(t.id);
+        const active = Storage.get('theme', 'default') === t.id;
+        const lvlLocked = t.levelLocked && Level.level < t.levelLocked;
+        return `<div class="theme-card ${active ? 'active' : ''} ${lvlLocked ? 'locked' : ''}" onclick="buyTheme('${t.id}'); setTimeout(() => openSettings(), 250);">
+          <div class="theme-preview" style="background:${t.preview}"></div>
+          <div class="theme-name">${t.name}</div>
+          <div class="theme-price ${lvlLocked ? 'lock' : ''}">${lvlLocked ? '🔒 Lv ' + t.levelLocked : owned ? (active ? '✓ Active' : 'Tap to use') : '🪙 ' + t.price}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <h3 style="margin:16px 0 8px;font-size:11px;color:var(--text-dim);font-weight:700">ℹ️ Info</h3>
+    <div class="setting-row"><div class="setting-label"><span>📦</span> Version</div><div style="font-size:11px;color:var(--text-dim)">4.0 Legendary</div></div>
+    <div class="setting-row"><div class="setting-label"><span>⭐</span> Level</div><div style="font-size:11px;color:var(--accent);font-weight:700">${Level.level} · ${Level.rank.name}</div></div>
+    <div class="setting-row"><div class="setting-label"><span>💾</span> Coins</div><div style="font-size:11px;color:var(--coin);font-weight:700">🪙 ${Player.coins.toLocaleString()}</div></div>
+    <div class="setting-row"><div class="setting-label"><span>🏆</span> Achievements</div><div style="font-size:11px;color:var(--text-dim)">${Storage.get('achievements', []).length}/${ACHIEVEMENTS.length}</div></div>
+    <button class="modal-btn" style="background:rgba(255,107,107,.2);color:#ff6b6b;margin-top:20px" onclick="resetAll()">Reset All Data</button>
+  `;
+  page.classList.add('open');
+}
+
+function toggleSetting(k, el) {
+  Settings[k] = !Settings[k];
+  el.classList.toggle('on', Settings[k]);
+  Sound.click();
+}
+
+function resetAll() {
+  showModal('⚠️', 'Reset Everything?', 'Delete all coins, achievements, and progress?', 'Yes, Reset', () => {
+    localStorage.clear(); location.reload();
+  });
+}
+
+function renderStatsPage() {
+  const body = document.getElementById('statsPageBody');
+  const stats = Stats.all();
+  const totalEarned = Storage.get('totalEarned', 0) || 0;
+  let html = `
+    <div class="stat-row" style="background:linear-gradient(135deg,rgba(108,92,231,.2),rgba(253,121,168,.15));border:1px solid rgba(108,92,231,.3)">
+      <div class="stat-row-emoji">⭐</div>
+      <div class="stat-row-info"><div class="stat-row-name">Level ${Level.level} · ${Level.rank.name}</div><div class="stat-row-val">${Level.xp} / ${Level.xpForLevel(Level.level)} XP</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-row-emoji">📈</div>
+      <div class="stat-row-info"><div class="stat-row-name">Total Earned</div><div class="stat-row-val">🪙 ${totalEarned.toLocaleString()}</div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-row-emoji">🏆</div>
+      <div class="stat-row-info"><div class="stat-row-name">Achievements</div><div class="stat-row-val">${Storage.get('achievements', []).length}/${ACHIEVEMENTS.length}</div></div>
+    </div>
+    <h3 style="margin:16px 0 8px;font-size:11px;color:var(--text-dim);font-weight:700">🎮 Per Game</h3>
+  `;
+  FEATURED.forEach(g => {
+    const s = stats[g.id] || {};
+    const played = (Storage.get('playedGames', []) || []).includes(g.id);
+    if (!played) return;
+    let value = 'Played ✓';
+    if (s.served) value = `Served: ${s.served}`;
+    else if (s.harvested) value = `Harvested: ${s.harvested}`;
+    else if (s.eggs) value = `Eggs: ${s.eggs}`;
+    else if (s.flowers) value = `Pollinated: ${s.flowers}`;
+    else if (s.pizzas) value = `Pizzas: ${s.pizzas}`;
+    else if (s.sushi) value = `Sushi: ${s.sushi}`;
+    else if (s.best) value = `Best: ${s.best}`;
+    else if (s.wins) value = `Wins: ${s.wins}`;
+    html += `<div class="stat-row">
+      <div class="stat-row-emoji">${g.icon}</div>
+      <div class="stat-row-info"><div class="stat-row-name">${g.name}</div><div class="stat-row-val">${value}</div></div>
+    </div>`;
+  });
+  body.innerHTML = html;
+}
+
+function renderLeaderboardFull() {
+  const body = document.getElementById('lbPageBody');
+  const lb = getLeaderboard();
+  body.innerHTML = `<p style="color:var(--text-dim);font-size:10.5px;margin-bottom:12px">Top players by total coins earned.</p>
+    ${lb.map((b, i) => `<div class="lb-row ${b.isYou ? 'you' : ''}">
+      <div class="lb-rank ${i < 3 ? 'top' + (i + 1) : ''}">${b.rank}</div>
+      <div class="lb-avatar">${b.emoji}</div>
+      <div class="lb-info">
+        <div class="lb-name">${b.name}${b.isYou ? ' (You)' : ''} · Lv ${b.level}</div>
+        <div class="lb-score">🪙 ${b.coins.toLocaleString()}</div>
+      </div>
+      ${i === 0 ? '<div style="font-size:18px">👑</div>' : ''}
+    </div>`).join('')}`;
+}
+
+function renderShop() {
+  const body = document.getElementById('shopPageBody');
+  const SHOP_ITEMS = [
+    { emoji: '🪙', name: 'Coin Pack',   desc: '+500 coins · FREE',   cost: 0,   action: () => { Player.coins = Player.coins + 500; showToast('+500 coins!'); } },
+    { emoji: '⚡', name: 'XP Boost',    desc: '2× XP next game',     cost: 100, action: () => { Storage.set('xpBoost', true); showToast('⚡ Active!'); } },
+    { emoji: '💎', name: 'Mega Pack',   desc: '+2000 coins',         cost: 300, action: () => { Player.coins = Player.coins + 2000; showToast('+2000 coins!'); } },
+    { emoji: '⭐', name: 'XP Bundle',   desc: '+500 XP',             cost: 250, action: () => { Level.addXP(500); showToast('+500 XP!'); } },
+    { emoji: '🎁', name: 'Mystery Box', desc: 'Random 100–1000',     cost: 150, action: () => {
+      const r = [100, 200, 300, 500, 1000][Math.floor(Math.random() * 5)];
+      Player.coins = Player.coins + r;
+      showModal('🎁', 'Mystery Box', `You got 🪙 ${r}!`, 'Nice!', null);
+    } },
+  ];
+  body.innerHTML = `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:9px">
+    ${SHOP_ITEMS.map((item, i) => `
+      <div class="game-card" style="animation-delay:${i * 0.04}s" onclick="window._shopBuy(${i})">
+        <div class="card-bg" style="background:linear-gradient(135deg,var(--accent),var(--accent2));font-size:42px">${item.emoji}</div>
+        <div class="card-overlay"></div>
+        <div class="card-badge play">${item.cost === 0 ? 'FREE' : '🪙 ' + item.cost}</div>
+        <div class="card-content"><h3>${item.name}</h3><p>${item.desc}</p></div>
+      </div>
+    `).join('')}
+  </div>`;
+  window._shopBuy = (i) => {
+    const item = SHOP_ITEMS[i];
+    if (item.cost > 0 && !Player.spend(item.cost)) { showToast('🪙 Not enough coins!'); return; }
+    item.action(); checkAchievements();
+  };
+}
+
+/* GAME OPEN/CLOSE */
+let gameCleanup = null;
+function openGame(id) {
+  Sound.click(); Settings.vibrate(10);
+  const g = FEATURED.find(x => x.id === id);
+  if (!g) return;
+  const played = Storage.get('playedGames', []);
+  if (!played.includes(id)) { played.push(id); Storage.set('playedGames', played); }
+  Stats.incr(id, 'plays');
+  updateQuestProgress(id + '_plays');
+  updateQuestProgress('games_played');
+  if (g.cat === 'farming') updateQuestProgress('farm_played');
+  if (g.cat === 'cooking') updateQuestProgress('cook_played');
+  checkAchievements();
+  const boost = Storage.get('xpBoost', false);
+  if (boost) Storage.set('xpBoost', false);
+  document.getElementById('gameTitle').textContent = g.name;
+  document.getElementById('gameStats').innerHTML = '';
+  const body = document.getElementById('gameBody');
+  body.innerHTML = '';
+  document.getElementById('gameScreen').classList.add('active');
+  requestAnimationFrame(() => {
+    const api = {
+      body,
+      setStats: (html) => document.getElementById('gameStats').innerHTML = html,
+      earn: (n, x, y) => earn(boost ? n * 2 : n, x, y),
+      toast: showToast, showModal, confetti, sound: Sound, xpBoost: boost,
+    };
+    const engine = GAME_ENGINES[id];
+    if (engine) gameCleanup = engine(api);
+  });
+}
+
+function closeGame() {
+  if (gameCleanup) { try { gameCleanup(); } catch(e) {} gameCleanup = null; }
+  document.getElementById('gameScreen').classList.remove('active');
+  document.getElementById('gameBody').innerHTML = '';
+  renderFeatured(); renderFarmCook();
+  renderDaily(); renderGift(); renderEvent(); renderLevelBanner();
+  renderQuests(); renderLbPreview(); checkAchievements();
+}
+
+/* ══════════════════════════════════════════════════════════
+   GAME ENGINES — abbreviated to fit, kept essential mechanics
+   ══════════════════════════════════════════════════════════ */
+
+/* 1. Subway Girl */
+function SubwayGirl({ body, setStats, earn, toast, showModal, sound }) {
+  body.innerHTML = '<canvas id="swCanvas"></canvas>';
+  const canvas = document.getElementById('swCanvas'), ctx = canvas.getContext('2d');
+  let W, H; const DPR = window.devicePixelRatio || 1;
+  function resize() { W = canvas.width = canvas.clientWidth * DPR; H = canvas.height = canvas.clientHeight * DPR; ctx.setTransform(DPR,0,0,DPR,0,0); }
+  resize(); window.addEventListener('resize', resize);
+  const LANES = [0.28, 0.5, 0.72];
+  let player = { lane: 1, x: 0, y: 0, jumping: false, jumpV: 0 };
+  let speed = 5, distance = 0, score = 0, gameOver = false;
+  let obstacles = [], coins = [], spawnTimer = 0;
+  let shieldActive = false, magnetActive = false, shieldTimer = 0, magnetTimer = 0;
+  const dW = () => W/DPR, dH = () => H/DPR;
+  player.x = LANES[1] * dW();
+  function onDown(e) { const p = e.touches ? e.touches[0] : e; p._sx = p.clientX; p._sy = p.clientY; }
+  function onUp(e) { if (gameOver) return;
+    const p = e.changedTouches ? e.changedTouches[0] : e;
+    const dx = p.clientX - p._sx, dy = p.clientY - p._sy;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 20) {
+      if (dx > 0) player.lane = Math.min(2, player.lane+1); else player.lane = Math.max(0, player.lane-1);
+      sound.jump();
+    } else if (dy < -30 && !player.jumping) { player.jumping = true; player.jumpV = -9; sound.jump(); }
+  }
+  canvas.addEventListener('touchstart', onDown, { passive: true });
+  canvas.addEventListener('touchend', onUp, { passive: true });
+  canvas.addEventListener('mousedown', onDown); canvas.addEventListener('mouseup', onUp);
+  window._swShield = () => { if (shieldActive) return; if (!Player.spend(30)) { toast('🪙 Need 30'); return; } shieldActive = true; shieldTimer = 8000; };
+  window._swMagnet = () => { if (magnetActive) return; if (!Player.spend(50)) { toast('🪙 Need 50'); return; } magnetActive = true; magnetTimer = 8000; };
+  function spawn() {
+    const lane = Math.floor(Math.random() * 3);
+    obstacles.push({ lane, y: -80 });
+    if (Math.random() < 0.6) {
+      const cLane = Math.floor(Math.random() * 3);
+      for (let i = 0; i < 4; i++) coins.push({ lane: cLane, y: -140 - i * 55 });
+    }
+  }
+  let lastT = performance.now(), animId;
+  function loop(now) {
+    animId = requestAnimationFrame(loop);
+    const dt = Math.min((now - lastT) / 16.67, 3); lastT = now;
+    if (gameOver) return;
+    const w = dW(), h = dH();
+    player.x += (LANES[player.lane] * w - player.x) * 0.22;
+    if (player.jumping) { player.jumpV += 0.55 * dt; player.y += player.jumpV * dt; if (player.y >= 0) { player.y = 0; player.jumping = false; player.jumpV = 0; } }
+    if (shieldTimer > 0) { shieldTimer -= 16 * dt; if (shieldTimer <= 0) shieldActive = false; }
+    if (magnetTimer > 0) { magnetTimer -= 16 * dt; if (magnetTimer <= 0) magnetActive = false; }
+    distance += speed * dt; speed = 5 + Math.min(distance/400, 8); score = Math.floor(distance/10);
+    spawnTimer += dt;
+    if (spawnTimer > Math.max(28 - speed, 15)) { spawn(); spawnTimer = 0; }
+    for (let i = obstacles.length-1; i >= 0; i--) { obstacles[i].y += speed*dt; if (obstacles[i].y > h+120) obstacles.splice(i,1); }
+    for (let i = coins.length-1; i >= 0; i--) { coins[i].y += speed*dt; if (coins[i].y > h+60) coins.splice(i,1); }
+    const py = h - 100 + player.y;
+    coins.forEach(c => {
+      const cx = LANES[c.lane] * w;
+      const dxp = cx - player.x, dyp = c.y - (py - 30);
+      if (magnetActive && Math.sqrt(dxp*dxp + dyp*dyp) < 140) { c.y -= (c.y - (py-30)) * 0.15; c.lane = player.lane; }
+      if (Math.abs(dxp) < 30 && Math.abs(dyp) < 40) { c._taken = true; score += 3; sound.pop(); }
+    });
+    coins = coins.filter(c => !c._taken);
+    for (const o of obstacles) {
+      const ox = LANES[o.lane] * w;
+      if (Math.abs(ox - player.x) < 40 && o.y > py - 70 && o.y < py + 20) {
+        if (shieldActive) { shieldActive = false; shieldTimer = 0; o._gone = true; }
+        else { gameOver = true; sound.lose();
+          const coinsEarned = Math.floor(score/10) + 5;
+          earn(coinsEarned, w/2, h/2); Stats.update('subway-girl', 'best', score);
+          const best = Stats.get('subway-girl').best || 0;
+          setTimeout(() => showModal('💥', 'Crashed!', `Score: ${score}<br>Best: ${best}<br>+🪙 ${coinsEarned}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('subway-girl'), 200); }), 400);
+          return; } } }
+    obstacles = obstacles.filter(o => !o._gone);
+    ctx.clearRect(0, 0, w, h);
+    const sky = ctx.createLinearGradient(0, 0, 0, h);
+    sky.addColorStop(0, '#1a1f3d'); sky.addColorStop(0.5, '#4facfe'); sky.addColorStop(1, '#00f2fe');
+    ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h);
+    const trackTop = h * 0.18;
+    ctx.fillStyle = 'rgba(0,0,0,.35)';
+    ctx.beginPath(); ctx.moveTo(w*0.05, h); ctx.lineTo(w*0.45, trackTop); ctx.lineTo(w*0.55, trackTop); ctx.lineTo(w*0.95, h); ctx.closePath(); ctx.fill();
+    const offset = (distance * 3) % 80;
+    ctx.strokeStyle = 'rgba(255,255,255,.3)'; ctx.lineWidth = 2;
+    for (let i = 0; i < 15; i++) {
+      const t1 = (i*80 + offset)/400, t2 = (i*80 + offset + 40)/400;
+      if (t1 > 1 || t2 > 1) continue;
+      [0.28, 0.5, 0.72].forEach(lx => {
+        const sc = 1 + t1*3, sc2 = 1 + t2*3;
+        ctx.beginPath();
+        ctx.moveTo(w*0.5 + (lx-0.5)*w*sc, h - t1*(h-trackTop));
+        ctx.lineTo(w*0.5 + (lx-0.5)*w*sc2, h - t2*(h-trackTop));
+        ctx.stroke(); }); }
+    obstacles.forEach(o => { const px = LANES[o.lane]*w; const sz = 55*(0.5+o.y/h*0.7);
+      ctx.font = `${sz}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText('🚧', px, o.y); });
+    coins.forEach(c => { const px = LANES[c.lane]*w; const sz = 20*(0.5+c.y/h*0.7);
+      ctx.font = `${sz*1.6}px sans-serif`; ctx.textAlign = 'center'; ctx.fillText('🪙', px, c.y); });
+    ctx.save();
+    ctx.globalAlpha = 0.3;
+    ctx.beginPath(); ctx.ellipse(player.x, py+8, 20, 6, 0, 0, Math.PI*2); ctx.fillStyle = '#000'; ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.font = '54px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('🏃‍♀️', player.x, py);
+    if (shieldActive) { ctx.strokeStyle = 'rgba(0,206,201,.8)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(player.x, py-20, 40, 0, Math.PI*2); ctx.stroke(); }
+    ctx.restore();
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 15px system-ui'; ctx.textAlign = 'left';
+    ctx.fillText(`Score: ${score}`, 14, 26);
+    setStats(`<div class="game-stat">🎯 ${score}</div><div class="game-stat" onclick="window._swShield()" style="cursor:pointer">🛡️ 30</div><div class="game-stat" onclick="window._swMagnet()" style="cursor:pointer">🧲 50</div>`);
+  }
+  animId = requestAnimationFrame(loop);
+  return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); delete window._swShield; delete window._swMagnet; };
+}
+
+/* 2. Coo Queen */
+function CooQueen({ body, setStats, earn, toast, sound }) {
+  const RECIPES = [
+    { name: 'Burger', emoji: '🍔', reward: 5, steps: ['🥩','🧅','🥬','🍞'] },
+    { name: 'Pizza', emoji: '🍕', reward: 6, steps: ['🍞','🍅','🧀','🥓'] },
+    { name: 'Sushi', emoji: '🍣', reward: 8, steps: ['🍚','🐟','🥒','🌿'] },
+    { name: 'Taco', emoji: '🌮', reward: 5, steps: ['🌮','🥩','🥬','🧀'] },
+    { name: 'Ice Cream', emoji: '🍦', reward: 4, steps: ['🥛','🍓','🍫','🍦'] },
+    { name: 'Cake', emoji: '🎂', reward: 10, steps: ['🥚','🍚','🍫','🍓'] },
+  ];
+  const ALL = ['🥩','🧅','🥬','🍞','🍅','🧀','🥓','🍚','🐟','🥒','🌿','🥛','🍓','🍫','🍦','🥚'];
+  let recipe, step, served = 0, timeLeft = 20, timerInt;
+  function pick() { recipe = RECIPES[Math.floor(Math.random()*RECIPES.length)]; step = 0; timeLeft = 20; render();
+    clearInterval(timerInt); timerInt = setInterval(() => { timeLeft--; updateTimer(); if (timeLeft <= 0) { clearInterval(timerInt); toast('⏰ Too slow!'); setTimeout(pick, 400); } }, 1000); }
+  function updateTimer() { const el = document.getElementById('cooTimerBar');
+    if (el) { el.style.width = Math.max(0, (timeLeft/20)*100) + '%';
+      el.style.background = timeLeft < 6 ? 'linear-gradient(90deg,#ff6b6b,#ee5a6f)' : 'linear-gradient(90deg,#00cec9,#00b894)'; } }
+  function correct() { sound.correct(); step++;
+    if (step >= recipe.steps.length) { clearInterval(timerInt);
+      const bonus = timeLeft > 12 ? 3 : 0; const reward = recipe.reward + bonus;
+      served++; Stats.update('coo-queen', 'served', served);
+      earn(reward); toast(`✅ ${recipe.name}! +🪙${reward}`); setTimeout(pick, 600);
+    } else render(); }
+  function wrong() { sound.wrong(); timeLeft = Math.max(2, timeLeft-3); updateTimer(); toast('❌ Wrong!'); }
+  function render() { if (!recipe) return;
+    body.innerHTML = `<div class="coo-wrap">
+      <div class="coo-order"><div class="coo-order-label">ORDER</div><div class="coo-order-name">${recipe.emoji} ${recipe.name}</div>
+        <div class="coo-order-reward">🪙 ${recipe.reward} + bonus</div>
+        <div class="coo-steps">${recipe.steps.map((s,i) => `<div class="coo-step ${i<step?'done':''} ${i===step?'current':''}">${s}</div>`).join('')}</div>
+        <div style="margin-top:8px;height:4px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+          <div id="cooTimerBar" style="height:100%;width:100%;transition:width 1s linear;background:linear-gradient(90deg,#00cec9,#00b894)"></div>
+        </div></div>
+      <div class="coo-pan"><div class="coo-pan-emoji">🍳</div></div>
+      <div class="coo-ingredients" id="cooIng"></div></div>`;
+    updateTimer();
+    const needed = recipe.steps[step];
+    const others = ALL.filter(x => x !== needed).sort(() => Math.random()-0.5).slice(0,7);
+    const tiles = [needed, ...others].sort(() => Math.random()-0.5);
+    document.getElementById('cooIng').innerHTML = tiles.map(t => `<div class="coo-ing" onclick="window._cooTap('${t}')">${t}</div>`).join('');
+    setStats(`<div class="game-stat">👨‍🍳 ${served}</div>`); }
+  window._cooTap = (e) => { if (e === recipe.steps[step]) correct(); else wrong(); };
+  pick();
+  return () => { clearInterval(timerInt); delete window._cooTap; };
+}
+
+/* 3. Miss Farming */
+function MissFarming({ body, setStats, earn, toast, sound }) {
+  const CROPS = {
+    carrot: { emoji: '🥕', cost: 3, reward: 8, time: 4000 },
+    corn: { emoji: '🌽', cost: 5, reward: 14, time: 6000 },
+    tomato: { emoji: '🍅', cost: 4, reward: 10, time: 5000 },
+    pumpkin: { emoji: '🎃', cost: 8, reward: 22, time: 8000 },
+  };
+  let plots = Array.from({ length: 9 }, () => ({ state: 'empty', crop: null, progress: 0, timer: null, elapsed: 0 }));
+  let currentCrop = 'carrot', harvested = 0;
+  function render() {
+    body.innerHTML = `<div class="farm-wrap">
+      <div class="farm-stats">
+        <div class="farm-stat"><div class="farm-stat-label">HARVESTED</div><div class="farm-stat-val">${harvested}</div></div>
+        <div class="farm-stat"><div class="farm-stat-label">GROWING</div><div class="farm-stat-val">${plots.filter(p=>p.state!=='empty').length}</div></div>
+        <div class="farm-stat"><div class="farm-stat-label">CROP</div><div class="farm-stat-val">${CROPS[currentCrop].emoji}</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+        ${Object.entries(CROPS).map(([id, c]) => `<div class="cafe-item" style="border-color:${id===currentCrop?'#43e97b':'rgba(255,255,255,.1)'}" onclick="window._farmPick('${id}')">
+          <div class="cafe-item-emoji">${c.emoji}</div><div class="cafe-item-name">🪙${c.cost}</div></div>`).join('')}
+      </div>
+      <div class="farm-field" id="farmField"></div>
+    </div>`;
+    renderField();
+    setStats(`<div class="game-stat">🌾 ${harvested}</div>`);
+  }
+  function renderField() {
+    document.getElementById('farmField').innerHTML = plots.map((p, i) => {
+      let emoji = ''; if (p.state === 'seedling') emoji = '🌱'; else if (p.state === 'growing') emoji = '🌿'; else if (p.state === 'ready') emoji = CROPS[p.crop].emoji;
+      const pct = p.state === 'empty' ? 0 : (p.progress*100).toFixed(0);
+      return `<div class="farm-plot ${p.state}" onclick="window._farmTap(${i})">
+        <div class="farm-plot-emoji">${emoji}</div>
+        ${p.state !== 'empty' && p.state !== 'ready' ? `<div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>` : ''}
+      </div>`;
+    }).join('');
+  }
+  function tap(i) { const p = plots[i];
+    if (p.state === 'empty') { const c = CROPS[currentCrop];
+      if (!Player.spend(c.cost)) { toast('🪙 Need '+c.cost); return; }
+      sound.plant(); p.state = 'seedling'; p.crop = currentCrop; p.progress = 0; p.elapsed = 0;
+      p.timer = setInterval(() => { p.elapsed += 100; p.progress = Math.min(1, p.elapsed / c.time);
+        if (p.progress >= 1) { clearInterval(p.timer); p.state = 'ready'; }
+        else if (p.progress > 0.5) p.state = 'growing'; renderField(); }, 100);
+      renderField();
+    } else if (p.state === 'ready') { const c = CROPS[p.crop];
+      harvested++; Stats.update('miss-farming', 'harvested', harvested);
+      const rect = event.currentTarget?.getBoundingClientRect() || { left: innerWidth/2, top: innerHeight/2 };
+      particleBurst(rect.left + rect.width/2, rect.top + rect.height/2, 10, c.emoji);
+      sound.correct(); earn(c.reward, rect.left + rect.width/2, rect.top + rect.height/2);
+      p.state = 'empty'; p.crop = null; p.progress = 0; p.elapsed = 0; renderField();
+      setStats(`<div class="game-stat">🌾 ${harvested}</div>`); } }
+  window._farmPick = (id) => { currentCrop = id; render(); };
+  window._farmTap = tap;
+  render();
+  return () => { plots.forEach(p => p.timer && clearInterval(p.timer)); delete window._farmPick; delete window._farmTap; };
+}
+
+/* 4. Miss Dragon */
+function MissDragon({ body, setStats, earn, toast, sound, showModal }) {
+  const SIZE = 8;
+  const GEMS = [{e:'🔴',c:'#ff6b6b'},{e:'🟡',c:'#fdcb6e'},{e:'🟢',c:'#00b894'},{e:'🔵',c:'#0984e3'},{e:'🟣',c:'#a29bfe'},{e:'🟠',c:'#e17055'}];
+  let board = [], selected = null, score = 0, moves = 25, busy = false;
+  const rand = () => Math.floor(Math.random()*GEMS.length);
+  function newBoard() { board = Array.from({ length: SIZE }, () => Array.from({ length: SIZE }, () => rand()));
+    for (let y = 0; y < SIZE; y++) for (let x = 0; x < SIZE; x++) { let t = 0; while (hasMatch(x,y) && t++ < 20) board[y][x] = rand(); } }
+  function hasMatch(x, y) { const v = board[y][x]; let h = 1, vv = 1;
+    for (let i = x-1; i >= 0 && board[y][i] === v; i--) h++;
+    for (let i = x+1; i < SIZE && board[y][i] === v; i++) h++;
+    for (let i = y-1; i >= 0 && board[i][x] === v; i--) vv++;
+    for (let i = y+1; i < SIZE && board[i][x] === v; i++) vv++;
+    return h >= 3 || vv >= 3; }
+  function findMatches() { const m = new Set();
+    for (let y = 0; y < SIZE; y++) { let run = 1;
+      for (let x = 1; x <= SIZE; x++) {
+        if (x < SIZE && board[y][x] !== null && board[y][x] === board[y][x-1]) run++;
+        else { if (run >= 3) for (let i = x-run; i < x; i++) m.add(`${i},${y}`); run = 1; } } }
+    for (let x = 0; x < SIZE; x++) { let run = 1;
+      for (let y = 1; y <= SIZE; y++) {
+        if (y < SIZE && board[y][x] !== null && board[y][x] === board[y-1][x]) run++;
+        else { if (run >= 3) for (let i = y-run; i < y; i++) m.add(`${x},${i}`); run = 1; } } }
+    return m; }
+  function gravity() { for (let x = 0; x < SIZE; x++) { let w = SIZE-1;
+    for (let y = SIZE-1; y >= 0; y--) if (board[y][x] !== null) { if (w !== y) { board[w][x] = board[y][x]; board[y][x] = null; } w--; }
+    for (let y = w; y >= 0; y--) board[y][x] = rand(); } }
+  async function resolve() { busy = true; let combo = 0;
+    while (true) { const m = findMatches(); if (m.size === 0) break;
+      combo++; score += m.size * 10 * combo;
+      m.forEach(k => { const [x,y] = k.split(',').map(Number);
+        const el = document.querySelector(`[data-x="${x}"][data-y="${y}"]`); if (el) el.classList.add('pop'); });
+      sound.pop(); await new Promise(r => setTimeout(r, 220));
+      m.forEach(k => { const [x,y] = k.split(',').map(Number); board[y][x] = null; });
+      gravity(); render(); await new Promise(r => setTimeout(r, 130)); }
+    if (combo > 0) earn(combo);
+    Stats.update('miss-dragon', 'best', score); busy = false;
+    if (moves <= 0) { const coins = Math.floor(score/20) + 5;
+      earn(coins); sound.win(); confetti(25);
+      setTimeout(() => showModal('🐉', 'Dragon Defeated!', `Score: ${score}<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('miss-dragon'), 200); }), 400); } }
+  function render() { let html = '<div class="dragon-board">';
+    for (let y = 0; y < SIZE; y++) for (let x = 0; x < SIZE; x++) {
+      const v = board[y][x]; const g = v !== null ? GEMS[v] : { e: '', c: 'transparent' };
+      const sel = selected && selected.x === x && selected.y === y ? 'selected' : '';
+      html += `<div class="dragon-cell ${sel}" data-x="${x}" data-y="${y}" style="background:${g.c}" onclick="window._dragonTap(${x},${y})">${g.e}</div>`; }
+    html += '</div>';
+    document.getElementById('dragonBoardWrap').innerHTML = html;
+    setStats(`<div class="game-stat">⭐ ${score}</div><div class="game-stat">🎯 ${moves}</div>`); }
+  function tap(x, y) { if (busy || moves <= 0) return;
+    if (!selected) { selected = { x, y }; render(); return; }
+    if (selected.x === x && selected.y === y) { selected = null; render(); return; }
+    const dx = Math.abs(selected.x - x), dy = Math.abs(selected.y - y);
+    if (dx + dy === 1) {
+      [board[y][x], board[selected.y][selected.x]] = [board[selected.y][selected.x], board[y][x]];
+      if (findMatches().size === 0) { [board[y][x], board[selected.y][selected.x]] = [board[selected.y][selected.x], board[y][x]];
+        toast('❌ No match'); selected = null; render(); return; }
+      moves--; selected = null; render(); sound.click(); resolve();
+    } else { selected = { x, y }; render(); } }
+  window._dragonTap = tap;
+  body.innerHTML = `<div class="dragon-wrap">
+    <div class="dragon-top"><div class="dragon-badge">🐉 Match 3+</div></div>
+    <div id="dragonBoardWrap"></div></div>`;
+  newBoard(); render();
+  return () => { delete window._dragonTap; };
+}
+
+/* 5. My Cafe Story */
+function MyCafeStory({ body, setStats, earn, toast, sound }) {
+  const NAMES = [{name:'Alex',e:'👨'},{name:'Emma',e:'👩'},{name:'Liam',e:'🧑'},{name:'Sophia',e:'👧'}];
+  const ORDERS = [{name:'Coffee',e:'☕',pay:5},{name:'Tea',e:'🍵',pay:4},{name:'Cake',e:'🎂',pay:8},{name:'Donut',e:'🍩',pay:6}];
+  let customers = [], served = 0, maxCust = 4;
+  let spawnInt, tickInt;
+  function spawn() { if (customers.length >= maxCust) return;
+    const n = NAMES[Math.floor(Math.random()*NAMES.length)]; const o = ORDERS[Math.floor(Math.random()*ORDERS.length)];
+    customers.push({ id: Date.now()+Math.random(), name: n.name, emoji: n.e, order: o, timeLeft: 100, totalTime: 9000 + Math.random()*4000, startTime: Date.now() });
+    render(); }
+  function serve(id) { const idx = customers.findIndex(c => c.id === id); if (idx === -1) return;
+    const c = customers[idx]; const pay = c.order.pay;
+    sound.correct(); earn(pay); served++;
+    if (served % 5 === 0) { sound.win(); confetti(15); toast(`⭐ Milestone!`); }
+    customers.splice(idx, 1); Stats.update('my-cafe-story', 'served', served); render(); }
+  function render() {
+    body.innerHTML = `<div class="cafe-wrap">
+      <div class="cafe-top">
+        <div class="cafe-stat coins"><div class="cafe-stat-label">SERVED</div><div class="cafe-stat-val">${served}</div></div>
+        <div class="cafe-stat level"><div class="cafe-stat-label">LEVEL</div><div class="cafe-stat-val">${Math.floor(served/5)+1}</div></div>
+        <div class="cafe-stat served"><div class="cafe-stat-label">QUEUE</div><div class="cafe-stat-val">${customers.length}/${maxCust}</div></div>
+      </div>
+      <div class="cafe-customers" id="custCont">
+        ${customers.length === 0 ? '<div style="text-align:center;color:var(--text-dim);font-size:11px;margin:auto;padding:20px"><div style="font-size:36px;opacity:.5">☕</div><div style="margin-top:8px">Waiting...</div></div>'
+        : customers.map(c => `<div class="cafe-customer" data-cust="${c.id}">
+            <div class="cafe-customer-emoji">${c.emoji}</div>
+            <div class="cafe-customer-info"><div class="cafe-customer-name">${c.name}</div>
+              <div class="cafe-customer-order">${c.order.e} ${c.order.name} · 🪙${c.order.pay}</div></div>
+            <button class="cafe-serve-btn" onclick="window._cafeServe(${c.id})">Serve</button>
+            <div class="cafe-customer-timer ${c.timeLeft<30?'warn':''}" style="width:${c.timeLeft}%"></div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">👥 ${customers.length}/${maxCust}</div>`); }
+  window._cafeServe = serve;
+  tickInt = setInterval(() => {
+    const now = Date.now();
+    customers.forEach(c => { c.timeLeft = Math.max(0, 100 - ((now - c.startTime) / c.totalTime) * 100); });
+    const cont = document.getElementById('custCont');
+    if (cont) customers.forEach(c => { const el = cont.querySelector(`[data-cust="${c.id}"] .cafe-customer-timer`);
+      if (el) { el.style.width = c.timeLeft + '%'; el.classList.toggle('warn', c.timeLeft < 30); } });
+    const before = customers.length;
+    customers = customers.filter(c => { if (c.timeLeft <= 0) { toast(`😞 ${c.name} left!`); return false; } return true; });
+    if (customers.length !== before) render();
+  }, 100);
+  spawnInt = setInterval(spawn, 2400);
+  setTimeout(spawn, 300); setTimeout(spawn, 900);
+  render();
+  return () => { clearInterval(spawnInt); clearInterval(tickInt); delete window._cafeServe; };
+}
+
+/* 6. Bubble Pop */
+function BubblePop({ body, setStats, earn, toast, sound, showModal }) {
+  const COLS = 8, ROWS = 10;
+  const COLORS = ['#ff6b6b','#fdcb6e','#00b894','#0984e3','#a29bfe','#e17055'];
+  let grid = [], score = 0, lastAwarded = 0;
+  function newGrid() { grid = Array.from({ length: ROWS }, () => Array.from({ length: COLS }, () => Math.floor(Math.random()*COLORS.length)));
+    for (let y = 6; y < ROWS; y++) for (let x = 0; x < COLS; x++) grid[y][x] = -1; }
+  function render() { let html = '<div style="padding:8px;height:100%;display:flex;flex-direction:column;gap:6px"><div style="display:grid;grid-template-columns:repeat('+COLS+',1fr);gap:3px;background:rgba(0,0,0,.3);padding:5px;border-radius:12px;flex:1;align-content:center">';
+    for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+      const v = grid[y][x];
+      if (v === -1) html += '<div style="aspect-ratio:1"></div>';
+      else html += `<div style="aspect-ratio:1;display:grid;place-items:center"><div onclick="window._bubbleTap(${x},${y})" style="width:90%;height:90%;border-radius:50%;background:${COLORS[v]};cursor:pointer;box-shadow:inset -3px -3px 8px rgba(0,0,0,.2)"></div></div>`;
+    }
+    html += '</div></div>'; body.innerHTML = html;
+    setStats(`<div class="game-stat">🫧 ${score}</div>`); }
+  function tap(x, y) { const v = grid[y][x]; if (v === -1) return;
+    const group = [], seen = new Set(); const stack = [[x, y]];
+    while (stack.length) { const [cx, cy] = stack.pop(); const key = cx + ',' + cy;
+      if (seen.has(key)) continue; if (cx < 0 || cx >= COLS || cy < 0 || cy >= ROWS) continue;
+      if (grid[cy][cx] !== v) continue; seen.add(key); group.push([cx, cy]);
+      stack.push([cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1]); }
+    if (group.length < 2) { sound.wrong(); return; }
+    group.forEach(([gx, gy]) => grid[gy][gx] = -1);
+    score += group.length * group.length; sound.pop();
+    if (score - lastAwarded >= 100) { const chunks = Math.floor((score-lastAwarded)/100); lastAwarded += chunks*100; earn(chunks*2); }
+    for (let cx = 0; cx < COLS; cx++) { const col = [];
+      for (let cy = ROWS-1; cy >= 0; cy--) if (grid[cy][cx] !== -1) col.push(grid[cy][cx]);
+      for (let cy = ROWS-1, i = 0; cy >= 0; cy--, i++) grid[cy][cx] = i < col.length ? col[i] : -1; }
+    Stats.update('bubble-pop', 'best', score); render(); }
+  window._bubbleTap = tap;
+  newGrid(); render();
+  return () => { delete window._bubbleTap; };
+}
+
+/* 7. Whack Attack */
+function WhackAttack({ body, setStats, earn, toast, sound, showModal }) {
+  let score = 0, timeLeft = 45, playing = true, interval, timerInt, activeHole = -1;
+  function render() {
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column"><div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:center">
+      ${Array.from({length:9},(_,i) => `<div data-i="${i}" onclick="window._whackTap(${i})" style="aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 30%, #4a2f18, #2a1a0a);display:grid;place-items:center;font-size:44px;cursor:pointer;overflow:hidden;border:3px solid rgba(255,255,255,.1);box-shadow:inset 0 6px 20px rgba(0,0,0,.6)"><div class="mole" style="font-size:44px;transform:scale(0) translateY(30px);transition:all .2s">🐹</div></div>`).join('')}
+    </div></div>`;
+    setStats(`<div class="game-stat">🔨 ${score}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`); }
+  function show() { if (!playing) return;
+    const els = document.querySelectorAll('[data-i] .mole');
+    if (activeHole >= 0 && els[activeHole]) els[activeHole].style.transform = 'scale(0) translateY(30px)';
+    activeHole = Math.floor(Math.random() * 9);
+    if (els[activeHole]) els[activeHole].style.transform = 'scale(1) translateY(0)'; }
+  function tap(i) { if (!playing) return;
+    const el = document.querySelector(`[data-i="${i}"] .mole`);
+    if (!el || el.style.transform !== 'scale(1) translateY(0)') { sound.wrong(); return; }
+    score++; Stats.update('whack-attack', 'score', score); sound.pop();
+    el.style.transform = 'scale(0) translateY(30px)';
+    setStats(`<div class="game-stat">🔨 ${score}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`); activeHole = -1; }
+  window._whackTap = tap;
+  interval = setInterval(show, 800);
+  timerInt = setInterval(() => { timeLeft--; setStats(`<div class="game-stat">🔨 ${score}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`);
+    if (timeLeft <= 0) { playing = false; clearInterval(interval); clearInterval(timerInt);
+      const coins = Math.floor(score/2) + 5; earn(coins); sound.win(); confetti(30);
+      setTimeout(() => showModal('🔨', "Time's Up!", `Whacked ${score} moles<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('whack-attack'), 200); }), 400); }
+  }, 1000);
+  render();
+  return () => { clearInterval(interval); clearInterval(timerInt); delete window._whackTap; };
+}
+
+/* 8. Color Switch */
+function ColorSwitch({ body, setStats, earn, toast, sound, showModal }) {
+  const COLORS = [{c:'#ff6b6b',n:'Red'},{c:'#00b894',n:'Green'},{c:'#0984e3',n:'Blue'},{c:'#fdcb6e',n:'Yellow'}];
+  let level = 1, target = 0, tiles = [], gameOver = false;
+  function newRound() { tiles = Array.from({ length: 16 }, () => Math.floor(Math.random()*4));
+    target = Math.floor(Math.random()*4); tiles[Math.floor(Math.random()*16)] = target; render(); }
+  function render() { const t = COLORS[target];
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700">
+        <div>🎨 Level ${level}</div><div style="color:${t.c}">Match ${t.n}!</div></div>
+      <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;align-content:center">
+        ${tiles.map((v,i) => `<div onclick="window._csTap(${i},${v})" style="aspect-ratio:1;border-radius:12px;cursor:pointer;background:${COLORS[v].c};${v===target?'border:3px solid #fff;box-shadow:0 0 20px rgba(255,255,255,.5)':''}"></div>`).join('')}
+      </div>
+      <div style="text-align:center;font-size:10px;color:var(--text-dim)">Tap outlined tile</div>
+    </div>`;
+    setStats(`<div class="game-stat">🎨 Lv ${level}</div>`); }
+  function tap(i, v) { if (gameOver) return;
+    if (v === target) { level++; sound.correct();
+      if (level % 5 === 0) { earn(5); Sound.win(); confetti(10); toast(`🎉 Level ${level}!`); }
+      Stats.update('color-switch', 'best', level); newRound();
+    } else { gameOver = true; sound.lose();
+      const coins = Math.floor(level / 2); if (coins > 0) earn(coins);
+      const best = Stats.get('color-switch').best || level;
+      setTimeout(() => showModal('🎨', 'Wrong!', `Reached level ${level}<br>Best: ${best}<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('color-switch'), 200); }), 400); } }
+  window._csTap = tap;
+  newRound();
+  return () => { delete window._csTap; };
+}
+
+/* 9. RPS (with multiplayer mode) */
+function RPS({ body, setStats, earn, toast, sound }) {
+  let wins = 0, losses = 0, ties = 0, streak = 0, locked = false;
+  let mode = 'ai'; // 'ai' | 'mp'
+  const C = [{id:'rock',e:'🪨',beats:'scissors'},{id:'paper',e:'📄',beats:'rock'},{id:'scissors',e:'✂️',beats:'paper'}];
+  
+  function render() {
+    if (mode === 'mp') return renderMP();
+    body.innerHTML = `<div style="padding:14px;height:100%;display:flex;flex-direction:column;gap:10px;justify-content:center;align-items:center">
+      <div style="display:flex;gap:6px">
+        <button onclick="window._rpsMode('ai')" style="padding:6px 14px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700;font-size:11px;font-family:inherit">🤖 VS AI</button>
+        <button onclick="window._rpsMode('mp')" style="padding:6px 14px;border-radius:10px;border:none;background:rgba(255,255,255,.1);color:#fff;font-weight:700;font-size:11px;font-family:inherit">👥 2 Player</button>
+      </div>
+      <div style="text-align:center;margin-top:6px">
+        <div style="font-size:10.5px;color:var(--text-dim);font-weight:700">WINS · LOSSES · TIES</div>
+        <div style="font-size:19px;font-weight:900;margin-top:3px"><span style="color:#00b894">${wins}</span> · <span style="color:#ff6b6b">${losses}</span> · <span style="color:#fdcb6e">${ties}</span></div>
+        <div style="font-size:10px;color:var(--text-dim);margin-top:3px">Streak: 🔥 ${streak}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;justify-content:center;margin:10px 0">
+        <div id="rpsYou" style="width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);display:grid;place-items:center;font-size:38px">❔</div>
+        <div style="font-size:18px;font-weight:900">VS</div>
+        <div id="rpsPc" style="width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);display:grid;place-items:center;font-size:38px">❔</div>
+      </div>
+      <div id="rpsResult" style="font-size:15px;font-weight:800;text-align:center;min-height:22px">Pick your move</div>
+      <div style="display:flex;gap:10px;justify-content:center">
+        ${C.map(c => `<div onclick="window._rpsPlay('${c.id}')" style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.1);display:grid;place-items:center;font-size:26px;cursor:pointer">${c.e}</div>`).join('')}
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🏆 ${wins}</div>`);
+  }
+  
+  /* Multiplayer mode — same screen, two turns */
+  let mpState = { p1: null, p2: null, turn: 1, p1Score: 0, p2Score: 0 };
+  
+  function renderMP() {
+    body.innerHTML = `<div style="padding:14px;height:100%;display:flex;flex-direction:column;gap:12px">
+      <button onclick="window._rpsMode('ai')" style="align-self:flex-start;padding:6px 14px;border-radius:10px;border:none;background:rgba(255,255,255,.1);color:#fff;font-weight:700;font-size:11px;font-family:inherit">← Back to VS AI</button>
+      
+      <div class="mp-status" style="font-size:13px;font-weight:700">
+        ${mpState.p1 && !mpState.p2 ? '👉 Player 2, pick your move!' :
+          mpState.p1 && mpState.p2 ? '⏳ Revealing...' :
+          '👈 Player 1, pick your move!'}
+      </div>
+      
+      <div class="mp-players">
+        <div class="mp-player">
+          <div style="font-size:11px;font-weight:700;color:var(--accent3)">PLAYER 1</div>
+          <div class="mp-hand">${mpState.p1 ? C.find(x=>x.id===mpState.p1).e : '❔'}</div>
+          <div style="font-size:10px;color:var(--text-dim)">Score: ${mpState.p1Score}</div>
+        </div>
+        <div class="mp-player">
+          <div style="font-size:11px;font-weight:700;color:var(--accent2)">PLAYER 2</div>
+          <div class="mp-hand">${mpState.p2 ? C.find(x=>x.id===mpState.p2).e : '❔'}</div>
+          <div style="font-size:10px;color:var(--text-dim)">Score: ${mpState.p2Score}</div>
+        </div>
+      </div>
+      
+      ${mpState.p1 && mpState.p2 ? '<div id="mpResult" style="text-align:center;font-size:16px;font-weight:800;padding:12px;background:rgba(255,255,255,.05);border-radius:12px">...</div>' : ''}
+      
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:auto">
+        ${C.map(c => `<div onclick="window._mpPlay('${c.id}')" style="width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.1);display:grid;place-items:center;font-size:30px;cursor:pointer">${c.e}</div>`).join('')}
+      </div>
+      
+      <button onclick="window._mpReset()" style="padding:10px;border-radius:10px;border:none;background:rgba(255,255,255,.1);color:#fff;font-weight:700;font-size:12px;font-family:inherit;margin-top:6px">🔄 New Round</button>
+    </div>`;
+    setStats(`<div class="game-stat">P1: ${mpState.p1Score}</div><div class="game-stat">P2: ${mpState.p2Score}</div>`);
+  }
+  
+  window._mpPlay = (id) => {
+    if (!mpState.p1) {
+      mpState.p1 = id;
+      sound.click();
+      renderMP();
+    } else if (!mpState.p2) {
+      mpState.p2 = id;
+      sound.click();
+      renderMP();
+      // Reveal after short delay
+      setTimeout(() => {
+        const p1 = C.find(x => x.id === mpState.p1);
+        const p2 = C.find(x => x.id === mpState.p2);
+        let result = '';
+        if (p1.id === p2.id) { result = 'tie'; sound.tone(600, 0.1); }
+        else if (p1.beats === p2.id) { result = 'p1'; mpState.p1Score++; sound.correct(); confetti(15); }
+        else { result = 'p2'; mpState.p2Score++; sound.correct(); confetti(15); }
+        
+        Storage.set('mpRpsPlays', (Storage.get('mpRpsPlays', 0) || 0) + 1);
+        checkAchievements();
+        
+        const el = document.getElementById('mpResult');
+        if (el) {
+          if (result === 'tie') { el.textContent = '🤝 It\'s a tie!'; el.style.color = '#fdcb6e'; }
+          else if (result === 'p1') { el.textContent = '🎉 Player 1 wins!'; el.style.color = '#00b894'; }
+          else { el.textContent = '🎉 Player 2 wins!'; el.style.color = '#fd79a8'; }
+        }
+      }, 400);
+    }
+  };
+  
+  window._mpReset = () => {
+    mpState = { p1: null, p2: null, turn: 1, p1Score: mpState.p1Score, p2Score: mpState.p2Score };
+    renderMP();
+  };
+  
+  window._rpsMode = (m) => { mode = m; render(); };
+  
+  function play(youId) {
+    if (locked) return; locked = true;
+    const you = C.find(c => c.id === youId);
+    const pc = C[Math.floor(Math.random()*3)];
+    const youEl = document.getElementById('rpsYou'), pcEl = document.getElementById('rpsPc');
+    youEl.animate([{transform:'rotateY(0)'},{transform:'rotateY(90deg) scale(1.1)'},{transform:'rotateY(0)'}], {duration:400});
+    pcEl.animate([{transform:'rotateY(0)'},{transform:'rotateY(90deg) scale(1.1)'},{transform:'rotateY(0)'}], {duration:400});
+    sound.click();
+    setTimeout(() => {
+      youEl.textContent = you.e; pcEl.textContent = pc.e;
+      let result = '';
+      if (you.id === pc.id) { result = 'tie'; ties++; streak = 0; sound.tone(600, 0.1); }
+      else if (you.beats === pc.id) { result = 'win'; wins++; streak++; sound.correct(); }
+      else { result = 'lose'; losses++; streak = 0; sound.wrong(); }
+      Stats.update('rps', 'wins', wins);
+      const resEl = document.getElementById('rpsResult');
+      if (result === 'win') { resEl.textContent = '🎉 You win!'; resEl.style.color = '#00b894'; earn(3 + Math.min(streak, 5)); }
+      else if (result === 'lose') { resEl.textContent = '😞 You lose!'; resEl.style.color = '#ff6b6b'; }
+      else { resEl.textContent = '🤝 Tie!'; resEl.style.color = '#fdcb6e'; }
+      setStats(`<div class="game-stat">🏆 ${wins}</div>`);
+      setTimeout(() => { locked = false; }, 800);
+    }, 200);
+  }
+  window._rpsPlay = play;
+  render();
+  return () => { delete window._rpsPlay; delete window._rpsMode; delete window._mpPlay; delete window._mpReset; };
+}
+
+/* 10. Memory Flip */
+function MemoryFlip({ body, setStats, earn, toast, sound, showModal }) {
+  const EMOJIS = ['🐶','🐱','🦊','🐼','🦁','🐸','🐵','🦄'];
+  let cards = [], flipped = [], matched = 0, moves = 0, locked = false;
+  function init() { cards = [...EMOJIS, ...EMOJIS].sort(() => Math.random() - 0.5).map(e => ({ emoji: e, revealed: false, matched: false }));
+    flipped = []; matched = 0; moves = 0; locked = false; render(); }
+  function render() {
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700">
+        <div>👣 Moves: ${moves}</div><div>✅ Pairs: ${matched}/${EMOJIS.length}</div></div>
+      <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-content:center" id="memGrid"></div>
+    </div>`;
+    document.getElementById('memGrid').innerHTML = cards.map((c, i) => `
+      <div onclick="window._memTap(${i})" style="aspect-ratio:1;border-radius:14px;cursor:pointer;display:grid;place-items:center;font-size:30px;transition:all .3s;background:${c.matched ? 'linear-gradient(135deg,#00cec9,#00b894)' : c.revealed ? 'rgba(255,255,255,.15)' : 'linear-gradient(135deg,var(--accent),var(--accent2))'};${c.matched ? 'opacity:.5' : ''}${c.revealed || c.matched ? '' : 'color:transparent'}">${c.revealed || c.matched ? c.emoji : '❔'}</div>
+    `).join('');
+    setStats(`<div class="game-stat">👣 ${moves}</div>`); }
+  function tap(i) { if (locked) return; const c = cards[i];
+    if (c.revealed || c.matched) return;
+    c.revealed = true; flipped.push(i); sound.click(); render();
+    if (flipped.length === 2) { moves++; locked = true;
+      const [a, b] = flipped;
+      if (cards[a].emoji === cards[b].emoji) { cards[a].matched = cards[b].matched = true; matched++; sound.correct();
+        flipped = []; locked = false; render();
+        if (matched === EMOJIS.length) { const coins = Math.max(5, 30 - moves);
+          earn(coins); sound.win(); confetti(30); Stats.update('memory-flip', 'best', 100 - moves);
+          setTimeout(() => showModal('🧠', 'Perfect!', `Completed in ${moves} moves<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('memory-flip'), 200); }), 400); }
+      } else { sound.wrong();
+        setTimeout(() => { cards[a].revealed = cards[b].revealed = false; flipped = []; locked = false; render(); }, 800); } } }
+  window._memTap = tap;
+  init();
+  return () => { delete window._memTap; };
+}
+
+/* 11-16: Remaining games (Pumpkin Harvest, Chicken Coop, Bee Garden, Ice Cream, Pizza, Sushi) */
+function PumpkinHarvest({ body, setStats, earn, toast, sound, showModal }) {
+  let harvested = 0, timeLeft = 40, playing = true, interval, timerInt, activeHole = -1;
+  function render() {
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:6px">
+      <div style="text-align:center;font-size:10.5px;color:var(--text-dim)">Tap ripe pumpkins 🎃</div>
+      <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:center">
+        ${Array.from({length:9},(_,i) => `<div data-i="${i}" onclick="window._pumpTap(${i})" style="aspect-ratio:1;border-radius:16px;background:linear-gradient(180deg,#3d2a1a,#1a0e05);border:3px solid rgba(255,255,255,.1);display:grid;place-items:center;cursor:pointer;overflow:hidden">
+          <div class="pumpkin" style="font-size:40px;transform:scale(0);transition:transform .2s">🎃</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🎃 ${harvested}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`); }
+  function show() { if (!playing) return;
+    const els = document.querySelectorAll('.pumpkin');
+    if (activeHole >= 0 && els[activeHole]) els[activeHole].style.transform = 'scale(0)';
+    activeHole = Math.floor(Math.random() * 9);
+    if (els[activeHole]) els[activeHole].style.transform = 'scale(1)';
+    const h = activeHole;
+    setTimeout(() => { if (els[h] && activeHole === h) { els[h].style.transform = 'scale(0)'; if (activeHole === h) activeHole = -1; } }, 1400); }
+  function tap(i) { if (!playing) return;
+    const el = document.querySelector(`[data-i="${i}"] .pumpkin`);
+    if (!el || el.style.transform !== 'scale(1)') { sound.wrong(); return; }
+    harvested++; Stats.update('pumpkin-harvest', 'harvested', harvested);
+    sound.pop(); el.style.transform = 'scale(0)';
+    if (harvested % 3 === 0) earn(5);
+    setStats(`<div class="game-stat">🎃 ${harvested}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`);
+    activeHole = -1; }
+  window._pumpTap = tap;
+  interval = setInterval(show, 700);
+  timerInt = setInterval(() => { timeLeft--; setStats(`<div class="game-stat">🎃 ${harvested}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`);
+    if (timeLeft <= 0) { playing = false; clearInterval(interval); clearInterval(timerInt);
+      const coins = Math.floor(harvested / 2) + 5; earn(coins); sound.win(); confetti(30);
+      setTimeout(() => showModal('🎃', "Harvest Done!", `Collected ${harvested}<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('pumpkin-harvest'), 200); }), 400); } }, 1000);
+  render();
+  return () => { clearInterval(interval); clearInterval(timerInt); delete window._pumpTap; };
+}
+
+function ChickenCoop({ body, setStats, earn, toast, sound }) {
+  let eggs = 0, earned = 0;
+  let chickens = [
+    { id: 1, emoji: '🐔', name: 'Henrietta', progress: 0, ready: false, speed: 3000 },
+    { id: 2, emoji: '🐓', name: 'Rocky',     progress: 0, ready: false, speed: 4000 },
+    { id: 3, emoji: '🐤', name: 'Chirpy',    progress: 0, ready: false, speed: 2500 },
+    { id: 4, emoji: '🐣', name: 'Sunny',     progress: 0, ready: false, speed: 3500 },
+  ];
+  let tickInt;
+  function render() {
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:8px">
+      <div class="farm-stats">
+        <div class="farm-stat"><div class="farm-stat-label">EGGS</div><div class="farm-stat-val">${eggs}</div></div>
+        <div class="farm-stat"><div class="farm-stat-label">EARNED</div><div class="farm-stat-val">🪙${earned}</div></div>
+        <div class="farm-stat"><div class="farm-stat-label">HENS</div><div class="farm-stat-val">${chickens.length}</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;flex:1;align-content:center">
+        ${chickens.map(c => `<div onclick="window._chickenTap(${c.id})" style="background:rgba(255,255,255,.06);border:2px solid ${c.ready?'#fdcb6e':'rgba(255,255,255,.1)'};border-radius:14px;padding:12px;text-align:center;cursor:pointer;position:relative">
+          <div style="font-size:40px">${c.emoji}${c.ready ? '<span style="font-size:22px;position:absolute;top:8px;right:8px">🥚</span>' : ''}</div>
+          <div style="font-size:10.5px;font-weight:700;margin-top:6px">${c.name}</div>
+          <div style="height:3px;background:rgba(0,0,0,.3);border-radius:3px;overflow:hidden;margin-top:6px">
+            <div style="height:100%;width:${c.progress*100}%;background:linear-gradient(90deg,#fdcb6e,#e17055);transition:width .3s"></div>
+          </div>
+        </div>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div class="cafe-item" onclick="window._buyChicken()">
+          <div class="cafe-item-emoji">🐔</div><div class="cafe-item-name">Buy Hen (🪙50)</div></div>
+        <div class="cafe-item" onclick="window._feedAll()">
+          <div class="cafe-item-emoji">🌾</div><div class="cafe-item-name">Feed (🪙15)</div></div>
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🥚 ${eggs}</div>`); }
+  window._chickenTap = (id) => { const c = chickens.find(x => x.id === id);
+    if (!c || !c.ready) { if (c) sound.wrong(); return; }
+    c.ready = false; c.progress = 0;
+    eggs++; earned += 5; Stats.update('chicken-coop', 'eggs', eggs);
+    sound.correct(); earn(5); render(); };
+  window._buyChicken = () => { if (!Player.spend(50)) { toast('🪙 Need 50'); return; }
+    const names = ['Daisy','Penny','Nugget','Clucky'];
+    chickens.push({ id: Date.now(), emoji: '🐔', name: names[Math.floor(Math.random()*names.length)], progress: 0, ready: false, speed: 2000 + Math.random()*3000 });
+    toast('🐔 New hen!'); render(); };
+  window._feedAll = () => { if (!Player.spend(15)) { toast('🪙 Need 15'); return; }
+    chickens.forEach(c => { c.progress = Math.min(1, c.progress + 0.5); if (c.progress >= 1) c.ready = true; });
+    toast('🌾 Hens happy!'); render(); };
+  tickInt = setInterval(() => { let changed = false;
+    chickens.forEach(c => { if (!c.ready) { c.progress += 100 / c.speed; if (c.progress >= 1) { c.progress = 1; c.ready = true; changed = true; } } });
+    if (changed) render(); }, 200);
+  render();
+  return () => { clearInterval(tickInt); delete window._chickenTap; delete window._buyChicken; delete window._feedAll; };
+}
+
+function BeeGarden({ body, setStats, earn, toast, sound, showModal }) {
+  let flowers = [], bee = { x: 50, y: 50 }, pollinated = 0, earned = 0, timeLeft = 45;
+  let pollinateInt;
+  function spawnFlower() { if (flowers.length >= 8) return;
+    const colors = ['#ff6b6b','#fdcb6e','#f093fb','#a29bfe','#00cec9'];
+    flowers.push({ id: Date.now() + Math.random(), x: 15 + Math.random()*70, y: 20 + Math.random()*60,
+      color: colors[Math.floor(Math.random()*colors.length)], emoji: '🌸' }); }
+  function render() {
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:6px">
+      <div class="farm-stats">
+        <div class="farm-stat"><div class="farm-stat-label">POLLINATED</div><div class="farm-stat-val">${pollinated}</div></div>
+        <div class="farm-stat"><div class="farm-stat-label">EARNED</div><div class="farm-stat-val">🪙${earned}</div></div>
+        <div class="farm-stat"><div class="farm-stat-label">TIME</div><div class="farm-stat-val">${timeLeft}s</div></div>
+      </div>
+      <div id="garden" style="flex:1;position:relative;background:linear-gradient(180deg,#0a2b15,#0a1a0e);border-radius:16px;overflow:hidden;border:2px solid rgba(255,255,255,.08);touch-action:none">
+        ${flowers.map(f => `<div style="position:absolute;left:${f.x}%;top:${f.y}%;font-size:32px;transform:translate(-50%,-50%)">${f.emoji}</div>`).join('')}
+        <div id="bee" style="position:absolute;left:${bee.x}%;top:${bee.y}%;font-size:36px;transform:translate(-50%,-50%);pointer-events:none">🐝</div>
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🐝 ${pollinated}</div>`);
+    attachEvents(); }
+  function attachEvents() { const garden = document.getElementById('garden');
+    function moveTo(clientX, clientY) { const rect = garden.getBoundingClientRect();
+      bee.x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+      bee.y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+      const el = document.getElementById('bee'); if (el) { el.style.left = bee.x + '%'; el.style.top = bee.y + '%'; }
+      checkPollinate(); }
+    garden.onmousemove = (e) => moveTo(e.clientX, e.clientY);
+    garden.ontouchmove = (e) => { e.preventDefault(); if (e.touches[0]) moveTo(e.touches[0].clientX, e.touches[0].clientY); };
+    garden.ontouchstart = (e) => { if (e.touches[0]) moveTo(e.touches[0].clientX, e.touches[0].clientY); }; }
+  function checkPollinate() { for (let i = flowers.length - 1; i >= 0; i--) { const f = flowers[i];
+    const dx = f.x - bee.x, dy = f.y - bee.y;
+    if (Math.sqrt(dx*dx + dy*dy) < 8) { pollinated++; earned += 3;
+      Stats.update('bee-garden', 'flowers', pollinated);
+      sound.pop(); if (pollinated % 3 === 0) earn(3);
+      flowers.splice(i, 1); render(); return; } } }
+  pollinateInt = setInterval(() => { spawnFlower(); render(); }, 1200);
+  const timerInt = setInterval(() => { timeLeft--; setStats(`<div class="game-stat">🐝 ${pollinated}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`);
+    if (timeLeft <= 0) { clearInterval(pollinateInt); clearInterval(timerInt);
+      const coins = pollinated + 5; earn(coins); sound.win(); confetti(30);
+      setTimeout(() => showModal('🐝', 'Done!', `Pollinated ${pollinated}<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('bee-garden'), 200); }), 400); } }, 1000);
+  for (let i = 0; i < 4; i++) spawnFlower();
+  render();
+  return () => { clearInterval(pollinateInt); clearInterval(timerInt); };
+}
+
+function IceCreamRush({ body, setStats, earn, toast, sound, showModal }) {
+  const ORDERS = [
+    { name: 'Vanilla', color: '#f5f0e6', emoji: '🍦', pay: 5 },
+    { name: 'Strawberry', color: '#ff9bc9', emoji: '🍓', pay: 7 },
+    { name: 'Chocolate', color: '#6b4423', emoji: '🍫', pay: 7 },
+    { name: 'Mint', color: '#7dd456', emoji: '🌿', pay: 8 },
+    { name: 'Blueberry', color: '#7b9cff', emoji: '🫐', pay: 8 },
+    { name: 'Mango', color: '#fdcb6e', emoji: '🥭', pay: 9 },
+  ];
+  let served = 0, order = null, built = [], timeLeft = 30, playing = true;
+  function newOrder() { order = ORDERS[Math.floor(Math.random() * ORDERS.length)];
+    const layers = 2 + Math.floor(Math.random() * 3);
+    order.stack = Array.from({ length: layers }, () => ORDERS[Math.floor(Math.random() * ORDERS.length)]);
+    built = []; timeLeft = 30; render(); }
+  function pick(idx) { if (!playing) return;
+    const picked = ORDERS[idx]; const expected = order.stack[built.length];
+    if (picked.name === expected.name) { built.push(picked); sound.pop();
+      if (built.length === order.stack.length) { served++;
+        const reward = order.pay + (timeLeft > 15 ? 3 : 0);
+        Stats.update('ice-cream-rush', 'served', served);
+        earn(reward); toast(`🍦 Perfect! +🪙${reward}`);
+        sound.correct(); setTimeout(newOrder, 500);
+      } else render();
+    } else { sound.wrong(); toast('❌ Wrong!'); timeLeft = Math.max(2, timeLeft - 3); render(); } }
+  window._icePick = pick;
+  function render() {
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:10px">
+      <div class="coo-order"><div class="coo-order-label">CUSTOMER WANTS</div>
+        <div class="coo-order-name">🍦 ${order.stack.length} layers</div>
+        <div class="coo-order-reward">🪙 ${order.pay} + bonus</div>
+        <div class="coo-steps">${order.stack.map((s, i) => `<div class="coo-step ${i < built.length ? 'done' : ''} ${i === built.length ? 'current' : ''}">${s.emoji}</div>`).join('')}</div>
+        <div style="margin-top:8px;height:4px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${(timeLeft/30)*100}%;transition:width 1s linear;background:${timeLeft<8?'linear-gradient(90deg,#ff6b6b,#ee5a6f)':'linear-gradient(90deg,#00cec9,#00b894)'}"></div>
+        </div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,.04);border-radius:14px;display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-end;padding:12px;gap:3px;min-height:0">
+        ${built.length === 0 ? '<div style="color:var(--text-dim);font-size:12px;margin:auto"><div style="font-size:40px;text-align:center">🍦</div></div>'
+          : built.map(b => `<div style="width:70%;height:22px;background:${b.color};border-radius:50% 50% 8px 8px;box-shadow:inset 0 -3px 6px rgba(0,0,0,.2)"></div>`).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+        ${ORDERS.map((o, i) => `<div onclick="window._icePick(${i})" style="background:${o.color};border-radius:12px;padding:10px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.15)">
+          <div style="font-size:22px">${o.emoji}</div>
+          <div style="font-size:9.5px;font-weight:700;color:#0a0e27">${o.name}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🍦 ${served}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`); }
+  const timerInt = setInterval(() => { if (!playing) return; timeLeft--;
+    if (timeLeft <= 0) { timeLeft = 30; built = []; toast('⏰ New order'); sound.wrong(); }
+    render(); }, 1000);
+  const totalTimer = setTimeout(() => { playing = false; clearInterval(timerInt);
+    const coins = Math.floor(served * 1.5) + 5;
+    earn(coins); sound.win(); confetti(30);
+    showModal('🍦', 'Closed!', `Served ${served}<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('ice-cream-rush'), 200); }); }, 90000);
+  newOrder();
+  return () => { clearInterval(timerInt); clearTimeout(totalTimer); delete window._icePick; };
+}
+
+function PizzaMaster({ body, setStats, earn, toast, sound, showModal }) {
+  const TOPPINGS = [
+    { emoji: '🍅', name: 'Tomato', color: '#e74c3c' },
+    { emoji: '🧀', name: 'Cheese', color: '#fdcb6e' },
+    { emoji: '🥓', name: 'Bacon', color: '#e17055' },
+    { emoji: '🍄', name: 'Mushroom', color: '#a29bfe' },
+    { emoji: '🫒', name: 'Olive', color: '#2d3436' },
+    { emoji: '🌶️', name: 'Pepper', color: '#ff6b6b' },
+  ];
+  let pizzas = 0, current = null, placed = [], timeLeft = 25, playing = true;
+  function newPizza() { const numToppings = 3 + Math.floor(Math.random() * 2);
+    const shuffled = [...TOPPINGS].sort(() => Math.random() - 0.5);
+    current = { toppings: shuffled.slice(0, numToppings), reward: 8 + numToppings * 2 };
+    placed = []; timeLeft = 25; render(); }
+  function placeTop(emoji) { if (!playing) return;
+    const needed = current.toppings.find(t => !placed.includes(t.emoji));
+    if (needed && needed.emoji === emoji) { placed.push(emoji); sound.sizzle();
+      if (placed.length === current.toppings.length) { pizzas++;
+        const reward = current.reward + (timeLeft > 12 ? 5 : 0);
+        Stats.update('pizza-master', 'pizzas', pizzas);
+        earn(reward); toast(`🍕 Perfect! +🪙${reward}`);
+        sound.correct(); confetti(10); setTimeout(newPizza, 500);
+      } else render();
+    } else { sound.wrong(); toast('❌ Wrong!'); timeLeft = Math.max(2, timeLeft - 3); render(); } }
+  window._pizzaTop = placeTop;
+  function render() {
+    body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:10px">
+      <div class="coo-order"><div class="coo-order-label">ORDER</div>
+        <div class="coo-order-name">🍕 Pizza #${pizzas + 1}</div>
+        <div class="coo-order-reward">🪙 ${current.reward} + bonus</div>
+        <div class="coo-steps">${current.toppings.map(t => {
+          const isPlaced = placed.includes(t.emoji);
+          const next = !isPlaced && current.toppings.findIndex(x => !placed.includes(x.emoji)) === current.toppings.indexOf(t);
+          return `<div class="coo-step ${isPlaced ? 'done' : ''} ${next ? 'current' : ''}">${t.emoji}</div>`;
+        }).join('')}</div>
+        <div style="margin-top:8px;height:4px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:${(timeLeft/25)*100}%;transition:width 1s linear;background:${timeLeft<8?'linear-gradient(90deg,#ff6b6b,#ee5a6f)':'linear-gradient(90deg,#00cec9,#00b894)'}"></div>
+        </div>
+      </div>
+      <div style="flex:1;background:rgba(255,255,255,.04);border-radius:14px;display:grid;place-items:center;min-height:0;padding:12px">
+        <div style="width:70%;aspect-ratio:1;max-width:220px;border-radius:50%;background:radial-gradient(circle, #ffd45e 0%, #f0a92a 100%);position:relative">
+          <div style="position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle, #e74c3c 0%, #c0392b 100%)"></div>
+          ${placed.map((emoji, i) => { const angle = (i / Math.max(placed.length, 3)) * Math.PI * 2;
+            const r = 25; const x = 50 + Math.cos(angle) * r; const y = 50 + Math.sin(angle) * r;
+            return `<div style="position:absolute;left:${x}%;top:${y}%;transform:translate(-50%,-50%);font-size:24px">${emoji}</div>`; }).join('')}
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+        ${TOPPINGS.map(t => `<div onclick="window._pizzaTop('${t.emoji}')" style="background:${t.color};border-radius:12px;padding:10px;text-align:center;cursor:pointer;border:2px solid rgba(255,255,255,.15)">
+          <div style="font-size:22px">${t.emoji}</div>
+          <div style="font-size:9.5px;font-weight:700;color:#fff">${t.name}</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🍕 ${pizzas}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`); }
+  const timerInt = setInterval(() => { if (!playing) return; timeLeft--;
+    if (timeLeft <= 0) { timeLeft = 25; placed = []; toast('⏰ New order'); sound.wrong(); }
+    render(); }, 1000);
+  const totalTimer = setTimeout(() => { playing = false; clearInterval(timerInt);
+    const coins = Math.floor(pizzas * 2) + 10;
+    earn(coins); sound.win(); confetti(30);
+    showModal('🍕', 'Oven Off!', `Made ${pizzas} pizzas<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('pizza-master'), 200); }); }, 90000);
+  newPizza();
+  return () => { clearInterval(timerInt); clearTimeout(totalTimer); delete window._pizzaTop; };
+}
+
+function SushiChef({ body, setStats, earn, toast, sound, showModal }) {
+  const SUSHI = [
+    { emoji: '🍣', name: 'Salmon Nigiri' },
+    { emoji: '🍤', name: 'Shrimp Nigiri' },
+    { emoji: '🥑', name: 'Avocado Roll' },
+    { emoji: '🐟', name: 'Tuna Maki' },
+    { emoji: '🥒', name: 'Cucumber Roll' },
+  ];
+  let sushi = 0, target = null, done = false, playing = true;
+  function newTarget() { target = SUSHI[Math.floor(Math.random() * SUSHI.length)]; done = false; render(); }
+  function slice() { if (!playing || done) return; done = true; sushi++;
+    Stats.update('sushi-chef', 'sushi', sushi); sound.chop();
+    earn(6); toast(`🍣 +🪙6`);
+    sound.correct(); setTimeout(newTarget, 400); }
+  window._sushiSlice = slice;
+  function render() {
+    body.innerHTML = `<div style="padding:14px;height:100%;display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:center">
+      <div style="text-align:center">
+        <div style="font-size:10.5px;color:var(--text-dim);font-weight:700;letter-spacing:1.5px">MAKE THIS</div>
+        <div style="font-size:15px;font-weight:800;margin-top:4px">${target.name}</div>
+        <div style="font-size:11px;color:var(--coin);font-weight:700;margin-top:2px">🪙 6</div>
+      </div>
+      <div style="font-size:80px">${target.emoji}</div>
+      <button onclick="window._sushiSlice()" style="width:80%;max-width:280px;padding:18px;border-radius:16px;border:none;background:linear-gradient(135deg,#00b894,#0984e3);color:#fff;font-weight:900;font-size:16px;cursor:pointer;font-family:inherit;${done?'opacity:.5':''}">
+        ${done ? '✓ Done!' : '🔪 Slice!'}
+      </button>
+      <div style="text-align:center;font-size:11px;color:var(--text-dim)">
+        Sliced: <span style="color:var(--coin);font-weight:800">${sushi}</span>
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🍣 ${sushi}</div>`); }
+  const totalTimer = setTimeout(() => { playing = false;
+    const coins = Math.floor(sushi * 1.5) + 10;
+    earn(coins); sound.win(); confetti(30);
+    showModal('🍣', 'Knife Down!', `Made ${sushi} sushi<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('sushi-chef'), 200); }); }, 60000);
+  newTarget();
+  return () => { clearTimeout(totalTimer); delete window._sushiSlice; };
+}
+
+/* SEASONAL EXCLUSIVE GAMES */
+function FrostRunner({ body, setStats, earn, toast, showModal, sound }) {
+  return SubwayGirl({ body, setStats, earn, toast, showModal, sound });
+}
+
+function SantaDash({ body, setStats, earn, toast, showModal, sound }) {
+  return SubwayGirl({ body, setStats, earn, toast, showModal, sound });
+}
+
+function EasterHunt({ body, setStats, earn, toast, sound, showModal }) {
+  let eggs = 0, timeLeft = 30, activeHole = -1, interval, timerInt, playing = true;
+  function render() { body.innerHTML = `<div style="padding:10px;height:100%;display:flex;flex-direction:column;gap:6px">
+      <div style="text-align:center;font-size:10.5px;color:var(--text-dim)">Find the hidden eggs 🐰</div>
+      <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:center">
+        ${Array.from({length:9},(_,i) => `<div data-i="${i}" onclick="window._eggsTap(${i})" style="aspect-ratio:1;border-radius:16px;background:linear-gradient(180deg,#2a4a2a,#1a2a1a);border:3px solid rgba(255,255,255,.1);display:grid;place-items:center;cursor:pointer;overflow:hidden">
+          <div class="egg" style="font-size:40px;transform:scale(0);transition:transform .2s">🥚</div>
+        </div>`).join('')}
+      </div>
+    </div>`;
+    setStats(`<div class="game-stat">🥚 ${eggs}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`); }
+  function show() { if (!playing) return;
+    const els = document.querySelectorAll('.egg');
+    if (activeHole >= 0 && els[activeHole]) els[activeHole].style.transform = 'scale(0)';
+    activeHole = Math.floor(Math.random() * 9);
+    if (els[activeHole]) els[activeHole].style.transform = 'scale(1)';
+    const h = activeHole;
+    setTimeout(() => { if (els[h] && activeHole === h) { els[h].style.transform = 'scale(0)'; if (activeHole === h) activeHole = -1; } }, 1200); }
+  function tap(i) { if (!playing) return;
+    const el = document.querySelector(`[data-i="${i}"] .egg`);
+    if (!el || el.style.transform !== 'scale(1)') { sound.wrong(); return; }
+    eggs++; sound.pop(); el.style.transform = 'scale(0)';
+    if (eggs % 2 === 0) earn(5);
+    setStats(`<div class="game-stat">🥚 ${eggs}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`);
+    activeHole = -1; }
+  window._eggsTap = tap;
+  interval = setInterval(show, 800);
+  timerInt = setInterval(() => { timeLeft--; setStats(`<div class="game-stat">🥚 ${eggs}</div><div class="game-stat">⏱️ ${timeLeft}s</div>`);
+    if (timeLeft <= 0) { playing = false; clearInterval(interval); clearInterval(timerInt);
+      const coins = Math.floor(eggs / 2) + 5; earn(coins); sound.win(); confetti(30);
+      setTimeout(() => showModal('🐰', "Hunt Over!", `Found ${eggs} eggs<br>+🪙 ${coins}`, 'Play Again', () => { closeGame(); setTimeout(() => openGame('easter-hunt'), 200); }), 400); } }, 1000);
+  render();
+  return () => { clearInterval(interval); clearInterval(timerInt); delete window._eggsTap; };
+}
+
+function LavaRunner({ body, setStats, earn, toast, showModal, sound }) {
+  return SubwayGirl({ body, setStats, earn, toast, showModal, sound });
+}
+
+/* ══════════════════════════════════════════════════════════
+   GAME ENGINE MAP
+   ══════════════════════════════════════════════════════════ */
+const GAME_ENGINES = {
+  'subway-girl':    SubwayGirl,
+  'coo-queen':      CooQueen,
+  'miss-farming':   MissFarming,
+  'miss-dragon':    MissDragon,
+  'my-cafe-story':  MyCafeStory,
+  'bubble-pop':     BubblePop,
+  'whack-attack':   WhackAttack,
+  'color-switch':   ColorSwitch,
+  'rps':            RPS,
+  'memory-flip':    MemoryFlip,
+  'pumpkin-harvest':PumpkinHarvest,
+  'chicken-coop':   ChickenCoop,
+  'bee-garden':     BeeGarden,
+  'ice-cream-rush': IceCreamRush,
+  'pizza-master':   PizzaMaster,
+  'sushi-chef':     SushiChef,
+  'frost-runner':   FrostRunner,
+  'santa-dash':     SantaDash,
+  'easter-hunt':    EasterHunt,
+  'lava-runner':    LavaRunner,
+};
+
+/* ══════════════════════════════════════════════════════════
+   BOOT
+   ══════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  applyTheme();
+  const season = applySeason();
+  Sound.enabled = Settings.sound;
+  Player.render();
+  Level.render();
+  renderEvent();
+  renderLevelBanner();
+  renderDaily();
+  renderGift();
+  renderFarmCook();
+  renderFeatured();
+  renderChips();
+  renderQuests();
+  renderLbPreview();
+  renderAchievements();
+  updateAchievementDot();
+  
+  // Sync coin amount (in case level up already gave coins)
+  Player.render();
+
+  if (season) {
+    setTimeout(() => showToast(`${season.emoji} ${season.name} Event! ×${season.bonus} rewards`), 1200);
+  }
+
+  setTimeout(() => checkAchievements(), 800);
+  setInterval(renderGift, 60000);
+  setInterval(renderEvent, 300000);
+  setInterval(Level.render, 10000);
+});
+
+document.addEventListener('touchstart', () => Sound.init(), { once: true });
+document.addEventListener('click', () => Sound.init(), { once: true });
+
+let lastTouch = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  if (now - lastTouch < 300) e.preventDefault();
+  lastTouch = now;
+}, { passive: false });
+</script>
+</body>
+  </html>
